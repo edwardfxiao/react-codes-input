@@ -13,7 +13,7 @@ React form input validation components. Online demo examples.
 * <a href="https://codesandbox.io/s/pjom8r78x7">Example of pin (type="number")</a>
 * <a href="https://codesandbox.io/s/1r77ozkrk7">Example of activation code (type="alphanumeric")</a>
 
-###  :tada: Version of react and react-dom is required ```16.8.6``` or higher.
+### Version of ```16.8.6``` or higher of react and react-dom is required.
 ```js
   "peerDependencies": {
     "react": "^16.8.6",
