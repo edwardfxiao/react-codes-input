@@ -33,8 +33,6 @@ Tested on IE9+ and Chrome and Safari(10.0.3)
 
 # Docs
 
-### <a name="Textbox"></a>Textbox
-
 |Props                        |       |Type         |Description                                    |Default          |
 |---                          |---    |---          |---                                            |  ---            |
 |initialFocus                 |  Opt  |  Bool       |Options are ['false', 'true']                  |  false          |
