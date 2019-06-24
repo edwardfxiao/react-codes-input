@@ -58,6 +58,8 @@ Tested on IE9+ and Chrome and Safari(10.0.3)
 |customStyleCode              |  Opt  |  Obj        |                                               |  {}             |
 |customStyleCodeWrapperFocus  |  Opt  |  Obj        |                                               |  {}             |
 
+
+
 ```js
 import ReactCodesInput from 'react-codes-input';
 import 'react-codes-input/lib/react-codes-input.min.css';
