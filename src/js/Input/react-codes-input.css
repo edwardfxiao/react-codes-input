@@ -1,0 +1,85 @@
+.component {
+  width: 100%;
+  height: 50px;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid #e5e5e5;
+  height: 100%;
+  display: table\0/IE9;
+}
+
+.code-wrapper {
+  position: relative;
+  padding: 0;
+  outline: none;
+  color: #000;
+  white-space: nowrap;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  word-break: normal;
+  line-height: 50px;
+  flex: 1 1 0px;
+  height: 100%;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+    display: table-cell\0/IE9;
+}
+
+.code-wrapper .entered-value {
+  position: absolute;
+  text-align: center;
+  display: block;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.code-wrapper .entered-value.hide {
+  width: 10px;
+  height: 10px;
+  background-color: #000;
+  border-radius: 50%;
+}
+
+.code-wrapper.active .code-wrapper--focus {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  right: 1px;
+  bottom: 1px;
+}
+
+.code {
+  height: 100%;
+  border-left: 1px solid #e5e5e5;
+}
+
+.code-wrapper:first-child .code {
+  border-left: 1px solid transparent;
+}
+
+.code-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.code-wrapper.active:not(.entered):after {
+  position: absolute;
+  content: '';
+  display: block;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 20px;
+  width: 1px;
+  animation: blink-empty 1s infinite;
+  background-color: transparent;
+}
+
+@keyframes blink-empty {
+  50% {
+    background-color: #333;
+  }
+}
