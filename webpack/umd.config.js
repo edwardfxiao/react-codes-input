@@ -4,7 +4,7 @@ const path = require('path');
 const PATH = require('./build_path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-let libraryName = 'react-inputs-validation';
+let libraryName = 'react-codes-input';
 
 let plugins = [],
   outputFile;
@@ -20,40 +20,38 @@ if (env === 'build') {
 var config = (module.exports = {
   mode: 'production',
   context: PATH.ROOT_PATH,
-  entry: PATH.ROOT_PATH + 'src/js/Inputs/index.umd.ts',
+  entry: PATH.ROOT_PATH + 'src/js/Input/index.umd.js',
   module: {
     rules: [
       {
         test: /\.mp3?$/,
         include: [PATH.ROOT_PATH],
         exclude: [PATH.NODE_MODULES_PATH],
-        loader: 'file-loader?name=audio/[name]-[hash].[ext]',
+        loader: 'file-loader',
+        options: {
+          name: 'audio/[name]-[hash].[ext]',
+        },
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)\??.*$/,
         include: [PATH.ROOT_PATH],
         // exclude: [PATH.NODE_MODULES_PATH],
-        loader: 'url-loader?limit=1&name=font/[name]-[hash].[ext]',
+        loader: 'url-loader',
+        options: {
+          limit: 1,
+          name: 'font/[name]-[hash].[ext]',
+        },
       },
       {
         test: /\.(jpe?g|png|gif|svg)\??.*$/,
         include: [PATH.ROOT_PATH],
         // exclude: [PATH.NODE_MODULES_PATH],
-        loader: 'url-loader?limit=1&name=img/[name]-[hash].[ext]',
+        loader: 'url-loader',
+        options: {
+          limit: 1,
+          name: 'img/[name]-[hash].[ext]',
+        },
       },
-      {
-        test: /\.(ts|tsx)$/,
-        enforce: 'pre',
-        use: [
-          {
-            loader: 'tslint-loader',
-            options: {
-              // emitWarning: true
-            },
-          },
-        ],
-      },
-      { test: /\.(ts|tsx)$/, loader: 'awesome-typescript-loader' },
       {
         test: /\.jsx?$/,
         include: [PATH.ROOT_PATH],
@@ -75,6 +73,7 @@ var config = (module.exports = {
       },
       {
         test: /\.css$/,
+        include: [PATH.NODE_MODULES_PATH],
         enforce: 'pre',
         enforce: 'post',
         use: [
@@ -82,9 +81,40 @@ var config = (module.exports = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
               importLoaders: 1,
-              localIdentName: '[name]__[local]___[hash:base64:5]',
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: loader => [
+                require('postcss-import')({
+                  root: loader.resourcePath,
+                }),
+                require('autoprefixer')(),
+                require('cssnano')(),
+              ],
+            },
+          },
+        ],
+      },
+      {
+        test: /\.css$/,
+        include: [PATH.SOURCE_PATH],
+        exclude: [PATH.NODE_MODULES_PATH],
+        enforce: 'pre',
+        enforce: 'post',
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                mode: 'local',
+                context: path.resolve(__dirname, 'src'),
+                localIdentName: '[name]__[local]___[hash:base64:5]',
+              },
+              importLoaders: 1,
             },
           },
           {

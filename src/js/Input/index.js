@@ -5,7 +5,6 @@ if (!('classList' in document.documentElement)) {
   Object.defineProperty(HTMLElement.prototype, 'classList', {
     get: function() {
       var self = this;
-
       function update(fn) {
         return function(value) {
           var classes = self.className.split(/\s+/g);
@@ -50,6 +49,7 @@ const Index = ({
   type = DEFAULT_TYPES[0],
   letterCase = CASE_TYPES[0],
   value = '',
+  disabled = false,
   hide = false,
   focusColor = '#007bff',
   classNameComponent = '',
@@ -144,7 +144,7 @@ const Index = ({
     setIsFocus(false);
   }, []);
   return (
-    <div ref={$component} className={cx(CSS['component'], classNameComponent)} style={customStyleComponent}>
+    <div ref={$component} className={cx(CSS['component'], disabled && CSS['disabled'], classNameComponent)} style={customStyleComponent}>
       <div ref={wrapperRef} className={cx(CSS['wrapper'], classNameWrapper)} style={customStyleWrapper}>
         {DEFAULT_CODES.map((i, k) => {
           const isLastItem = k === DEFAULT_CODES.length - 1 ? true : false;
@@ -171,6 +171,9 @@ const Index = ({
               id={`${id}${k}`}
               onClick={() => {
                 for (let index = 0; index < DEFAULT_CODES.length; index += 1) {
+                  console.log(`${id}${index}`)
+                  console.log(document.getElementById)
+                  console.log(document.getElementById(`${id}${index}`))
                   document.getElementById(`${id}${index}`).classList.remove(CSS['active']);
                 }
                 let focusedIndex = -1;
@@ -206,17 +209,16 @@ const Index = ({
         autoComplete="off"
         type="password"
         value={code}
+        disabled={disabled}
         maxLength={DEFAULT_CODES.length}
         onChange={handleOnCodeChange}
         onFocus={handleOnCodeFocus}
         onBlur={handleOnCodeBlur}
-        style={
-          {
-            position: 'absolute',
-            opacity: '0',
-            marginLeft: '-999px',
-          }
-        }
+        style={{
+          position: 'absolute',
+          opacity: '0',
+          marginLeft: '-999px',
+        }}
       />
     </div>
   );

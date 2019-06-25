@@ -302,6 +302,7 @@ const Component = () => {
                   codeLength={10}
                   type="alphanumeric"
                   hide={false}
+                  disabled={true}
                   value={activation}
                   onChange={res => {
                     setActivation(res);

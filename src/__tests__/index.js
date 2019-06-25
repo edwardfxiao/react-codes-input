@@ -1,8 +1,19 @@
-import { expect } from 'chai';
-// import message, { getCustomErrorMessage, handleCustomErrorMessage } from '../js/Inputs/message.ts';
+import React, { useRef } from 'react';
+import { configure, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import ReactCodesInput from '../js/Input/index.js';
+configure({ adapter: new Adapter() });
 
-describe('message', () => {
-    it('[empty]: Should return "foobar不能为空"', () => {
-      expect('1').equal('1');
-    });
+const ID = 'code';
+
+describe('ReactCodesInput component', () => {
+  it('[Toggling "validate"]: Should show msgHtml(err) when toggling "validate"', () => {
+    const $ref = useRef(null);
+    const wrapper = mount(<ReactCodesInput wrapperRef={$ref} id={ID} codeLength={4} value="" />);
+    // console.log(wrapper.ref)
+    // const $input = wrapper.find(`#${ID}0`);
+    // console.log($input.instance())
+    // $input.simulate('click');
+    // expect(value).toEqual('clicked');
+  });
 });

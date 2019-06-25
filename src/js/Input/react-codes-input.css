@@ -3,6 +3,11 @@
   height: 50px;
 }
 
+.component.disabled .code {
+  cursor: not-allowed;
+  background-color: #f5f5f5;
+}
+
 .wrapper {
   display: flex;
   align-items: center;
@@ -25,7 +30,7 @@
   flex: 1 1 0px;
   height: 100%;
   -ms-overflow-style: -ms-autohiding-scrollbar;
-    display: table-cell\0/IE9;
+  display: table-cell\0/IE9;
 }
 
 .code-wrapper .entered-value {
@@ -53,6 +58,7 @@
 }
 
 .code {
+  cursor: pointer;
   height: 100%;
   border-left: 1px solid #e5e5e5;
 }
@@ -76,6 +82,10 @@
   width: 1px;
   animation: blink-empty 1s infinite;
   background-color: transparent;
+}
+
+.component.disabled .code-wrapper.active:not(.entered):after {
+  display: none;
 }
 
 @keyframes blink-empty {

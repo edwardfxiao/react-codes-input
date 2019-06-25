@@ -9,9 +9,7 @@ React verify or password code entering component. Online demo examples.
 <a href="https://github.com/edwardfhsiao/react-codes-input/blob/gh-pages/example/index.js">Demo source code</a>
 
 # Codesandbox Examples
-* <a href="https://codesandbox.io/s/v3wq0llmo3">Example of password (type="alpha")</a>
-* <a href="https://codesandbox.io/s/pjom8r78x7">Example of pin (type="number")</a>
-* <a href="https://codesandbox.io/s/1r77ozkrk7">Example of activation code (type="alphanumeric")</a>
+* <a href="https://codesandbox.io/s/index-6hnbf">Examples</a>
 
 ### Version of ```16.8.6``` or higher of react and react-dom is required.
 ```js
