@@ -171,9 +171,6 @@ const Index = ({
               id={`${id}${k}`}
               onClick={() => {
                 for (let index = 0; index < DEFAULT_CODES.length; index += 1) {
-                  console.log(`${id}${index}`)
-                  console.log(document.getElementById)
-                  console.log(document.getElementById(`${id}${index}`))
                   document.getElementById(`${id}${index}`).classList.remove(CSS['active']);
                 }
                 let focusedIndex = -1;

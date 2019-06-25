@@ -97,14 +97,6 @@ const Component = () => {
   const [password, setPassword] = useState('');
   const [pin, setPin] = useState('');
   const [activation, setActivation] = useState('');
-  const submit = useCallback(
-    () => {
-      if (password.length === 6) {
-        alert('success');
-      }
-    },
-    [password],
-  );
   return (
     <div className={CSS['wrapper']}>
       <div className={CSS['nav']}>
@@ -302,7 +294,7 @@ const Component = () => {
                   codeLength={10}
                   type="alphanumeric"
                   hide={false}
-                  disabled={true}
+                  disabled={false}
                   value={activation}
                   onChange={res => {
                     setActivation(res);
