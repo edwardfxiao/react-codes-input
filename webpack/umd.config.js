@@ -110,9 +110,8 @@ var config = (module.exports = {
             loader: 'css-loader',
             options: {
               modules: {
-                mode: 'local',
                 context: path.resolve(__dirname, 'src'),
-                localIdentName: '[name]__[local]___[hash:base64:5]',
+                localIdentName: '[name]__[local]',
               },
               importLoaders: 1,
             },
