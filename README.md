@@ -42,7 +42,7 @@ Tested on IE9+ and Chrome and Safari(10.0.3)
 |letterCase                   |  Opt  |  Str        |Options are ['upper', 'lower']                 |  "upper"        |
 |value                        |  Req  |  Str        |                                               |  ""             |
 |hide                         |  Opt  |  Bool       |Options are ['false', 'true']                  |  false          |
-|focusColor                   |  Opt  |  Str        |                                               |  "007bff"       |
+|focusColor                   |  Opt  |  Str        |                                               |  "#007bff"      |
 |classNameComponent           |  Opt  |  Str        |                                               |  ""             |
 |classNameWrapper             |  Opt  |  Str        |                                               |  ""             |
 |classNameCodeWrapper         |  Opt  |  Str        |                                               |  ""             |
