@@ -1,6 +1,6 @@
 {
   "name": "react-codes-input",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "React ",
   "main": "index.js",
   "repository": {
@@ -80,6 +80,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-markdown": "^4.0.9",
+    "uglifyjs-webpack-plugin": "^2.1.3",
     "url-loader": "^2.0.0",
     "webpack": "^4.19.1",
     "webpack-assets-manifest": "^3.1.0",
