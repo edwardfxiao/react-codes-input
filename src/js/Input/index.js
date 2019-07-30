@@ -114,6 +114,9 @@ const Index = ({
     },
     [value],
   );
+  useEffect(() => {
+    document.getElementById(id).removeAttribute('value');
+  });
   const handleOnCodeChange = useCallback(() => {
     const res = document.getElementById(id).value;
     let v = '';
