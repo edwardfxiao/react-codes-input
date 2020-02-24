@@ -45,6 +45,7 @@ return
         codeLength={6}
         type="number"
         hide={true}
+        placeholder=""
         value={password}
         onChange={res => {
           setPassword(res);
@@ -138,6 +139,7 @@ const Component = () => {
                   codeLength={6}
                   type="alpha"
                   hide={true}
+                  placeholder=""
                   value={password}
                   onChange={res => {
                     setPassword(res);
@@ -180,6 +182,7 @@ const Component = () => {
   codeLength={6}
   type="alpha" // ['alphanumeric', 'alpha', 'number']
   hide={true}
+  placeholder=""
   value={password}
   onChange={res => {
     setPassword(res);
@@ -216,6 +219,7 @@ const Component = () => {
                   codeLength={4}
                   type="number"
                   hide={false}
+                  placeholder=""
                   value={pin}
                   onChange={res => {
                     setPin(res);
@@ -258,6 +262,7 @@ const Component = () => {
   codeLength={4}
   type="number" // ['alphanumeric', 'alpha', 'number']
   hide={false}
+  placeholder=""
   value={pin}
   onChange={res => {
     setPin(res);
@@ -294,6 +299,7 @@ const Component = () => {
                   codeLength={10}
                   type="alphanumeric"
                   hide={false}
+                  placeholder=""
                   disabled={false}
                   value={activation}
                   onChange={res => {
@@ -338,6 +344,7 @@ const Component = () => {
   codeLength={10}
   type="alphanumeric" // ['alphanumeric', 'alpha', 'number']
   hide={false}
+  placeholder=""
   value={activation}
   onChange={res => {
     setActivation(res);

@@ -1,8 +1,10 @@
 # react-codes-input
-[![npm version](https://badge.fury.io/js/react-codes-input.svg)](https://badge.fury.io/js/react-codes-input) [![Build Status](https://travis-ci.org/edwardfhsiao/react-codes-input.svg?branch=master)](https://travis-ci.org/edwardfhsiao/react-codes-input) [![react-codes-input](http://img.shields.io/npm/dm/react-codes-input.svg)](https://www.npmjs.com/package/react-codes-input) [![Coverage Status](https://coveralls.io/repos/github/edwardfhsiao/react-codes-input/badge.svg?branch=master)](https://coveralls.io/github/edwardfhsiao/react-codes-input?branch=master) ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/react-codes-input.svg) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/edwardfhsiao/react-codes-input/master/LICENSE)[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
+[![npm version](https://badge.fury.io/js/react-codes-input.svg)](https://badge.fury.io/js/react-codes-input) ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/react-codes-input.svg) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/edwardfhsiao/react-codes-input/master/LICENSE)[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 
 React verify or password code entering component. Online demo examples.
-# <img src="https://raw.githubusercontent.com/edwardfhsiao/react-codes-input/master/react-codes-input.gif" />
+
+<img src="https://raw.githubusercontent.com/edwardfhsiao/react-codes-input/master/react-codes-input.gif" width="400" />
+
 # Online Demo
 <a href="https://edwardfhsiao.github.io/react-codes-input/">Online demo example</a>
 
@@ -42,7 +44,8 @@ Tested on IE9+ and Chrome and Safari(10.0.3)
 |letterCase                   |  Opt  |  Str        |Options are ['upper', 'lower']                 |  "upper"        |
 |value                        |  Req  |  Str        |                                               |  ""             |
 |hide                         |  Opt  |  Bool       |Options are ['false', 'true']                  |  false          |
-|focusColor                   |  Opt  |  Str        |                                               |  "007bff"       |
+|placeholder                  |  Opt  |  Str        |                                               |  ""          |
+|focusColor                   |  Opt  |  Str        |                                               |  "#007bff"      |
 |classNameComponent           |  Opt  |  Str        |                                               |  ""             |
 |classNameWrapper             |  Opt  |  Str        |                                               |  ""             |
 |classNameCodeWrapper         |  Opt  |  Str        |                                               |  ""             |
@@ -55,6 +58,7 @@ Tested on IE9+ and Chrome and Safari(10.0.3)
 |customStyleEnteredValue      |  Opt  |  Obj        |                                               |  {}             |
 |customStyleCode              |  Opt  |  Obj        |                                               |  {}             |
 |customStyleCodeWrapperFocus  |  Opt  |  Obj        |                                               |  {}             |
+|customStylePlaceholder       |  Opt  |  Obj        |                                               |  {}             |
 
 
 
@@ -73,6 +77,7 @@ import 'react-codes-input/lib/react-codes-input.min.css';
   letterCase="upper" // Opt. Str. Default "upper". Options are ['upper', 'lower'].
   value="" // Req. Str. Default "".
   hide={false} // Opt. Bool. Default false. Options are ['false', 'true'].
+  placeholder="" // Opt. Str. Default "".
   focusColor="" // Opt. Str. Default "007bff".
   classNameComponent="" // Opt. Str. Default "".
   classNameWrapper="" // Opt. Str. Default "".
@@ -86,6 +91,7 @@ import 'react-codes-input/lib/react-codes-input.min.css';
   customStyleEnteredValue={} // Opt. Obj. Default {}.
   customStyleCode={} // Opt. Obj. Default {}.
   customStyleCodeWrapperFocus={} // Opt. Obj. Default {}.
+  customStylePlaceholder={} // Opt. Obj. Default {}.
 />
 ```
 
