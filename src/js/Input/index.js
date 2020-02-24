@@ -64,6 +64,8 @@ const Index = ({
   customStyleEnteredValue = {},
   customStyleCode = {},
   customStyleCodeWrapperFocus = {},
+  placeholder = '',
+  customStylePlaceholder = {},
 }) => {
   const DEFAULT_CODES = useMemo(() => [...Array(codeLength).keys()], []);
   const [code, setCode] = useState(value);
@@ -108,12 +110,9 @@ const Index = ({
       $component.current.removeEventListener('keypress', keypressHandler);
     };
   }, []);
-  useEffect(
-    () => {
-      setCode(getCased(value, letterCase));
-    },
-    [value],
-  );
+  useEffect(() => {
+    setCode(getCased(value, letterCase));
+  }, [value]);
   useEffect(() => {
     document.getElementById(id).removeAttribute('value');
   });
@@ -195,7 +194,7 @@ const Index = ({
               style={customStyleCodeWrapper}
             >
               <div className={cx(CSS['entered-value'], classNameEnteredValue, hide && isEntered && CSS['hide'])} style={customStyleEnteredValue}>
-                {hide ? '' : code[k]}
+                {typeof code[k] === 'undefined' && <span style={{color: '#ddd', ...customStylePlaceholder}}>{placeholder.split('')[k]}</span>} {hide ? '' : code[k]}
               </div>
               <div className={cx(CSS['code'], classNameCode)} style={customStyleCode}>
                 <div className={cx(CSS['code-wrapper--focus'], classNameCodeWrapperFocus)} style={{ ...focusStyle, ...customStyleCodeWrapperFocus }} />

@@ -44,6 +44,7 @@ Tested on IE9+ and Chrome and Safari(10.0.3)
 |letterCase                   |  Opt  |  Str        |Options are ['upper', 'lower']                 |  "upper"        |
 |value                        |  Req  |  Str        |                                               |  ""             |
 |hide                         |  Opt  |  Bool       |Options are ['false', 'true']                  |  false          |
+|placeholder                  |  Opt  |  Str        |                                               |  ""          |
 |focusColor                   |  Opt  |  Str        |                                               |  "#007bff"      |
 |classNameComponent           |  Opt  |  Str        |                                               |  ""             |
 |classNameWrapper             |  Opt  |  Str        |                                               |  ""             |
@@ -57,6 +58,7 @@ Tested on IE9+ and Chrome and Safari(10.0.3)
 |customStyleEnteredValue      |  Opt  |  Obj        |                                               |  {}             |
 |customStyleCode              |  Opt  |  Obj        |                                               |  {}             |
 |customStyleCodeWrapperFocus  |  Opt  |  Obj        |                                               |  {}             |
+|customStylePlaceholder       |  Opt  |  Obj        |                                               |  {}             |
 
 
 
@@ -75,6 +77,7 @@ import 'react-codes-input/lib/react-codes-input.min.css';
   letterCase="upper" // Opt. Str. Default "upper". Options are ['upper', 'lower'].
   value="" // Req. Str. Default "".
   hide={false} // Opt. Bool. Default false. Options are ['false', 'true'].
+  placeholder="" // Opt. Str. Default "".
   focusColor="" // Opt. Str. Default "007bff".
   classNameComponent="" // Opt. Str. Default "".
   classNameWrapper="" // Opt. Str. Default "".
@@ -88,6 +91,7 @@ import 'react-codes-input/lib/react-codes-input.min.css';
   customStyleEnteredValue={} // Opt. Obj. Default {}.
   customStyleCode={} // Opt. Obj. Default {}.
   customStyleCodeWrapperFocus={} // Opt. Obj. Default {}.
+  customStylePlaceholder={} // Opt. Obj. Default {}.
 />
 ```
 
