@@ -44,7 +44,6 @@ var config = (module.exports = {
         include: [PATH.ROOT_PATH],
         exclude: [PATH.NODE_MODULES_PATH],
         enforce: 'pre',
-        enforce: 'post',
         loader: 'eslint-loader',
         options: {
           emitWarning: true,
@@ -54,14 +53,12 @@ var config = (module.exports = {
         test: /\.jsx?$/,
         include: [PATH.ROOT_PATH],
         exclude: [PATH.NODE_MODULES_PATH],
-        enforce: 'pre',
         enforce: 'post',
         loader: 'babel-loader',
       },
       {
         test: /\.css$/,
         include: [PATH.NODE_MODULES_PATH],
-        enforce: 'pre',
         enforce: 'post',
         use: [
           MiniCssExtractPlugin.loader,
@@ -89,7 +86,6 @@ var config = (module.exports = {
         test: /\.css$/,
         include: [PATH.SOURCE_PATH],
         exclude: [PATH.NODE_MODULES_PATH],
-        enforce: 'pre',
         enforce: 'post',
         use: [
           MiniCssExtractPlugin.loader,
@@ -97,8 +93,6 @@ var config = (module.exports = {
             loader: 'css-loader',
             options: {
               modules: {
-                mode: 'local',
-                context: path.resolve(__dirname, 'src'),
                 localIdentName: '[name]__[local]___[hash:base64:5]',
               },
               importLoaders: 1,

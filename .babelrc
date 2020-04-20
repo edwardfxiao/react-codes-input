@@ -15,7 +15,7 @@
       "plugins": [
         ["css-modules-transform",
         {
-          "generateScopedName": "[name]__[local]"
+          "generateScopedName": "[name]__[local]___[hash:base64:5]"
         }],
         "@babel/proposal-class-properties",
         "@babel/proposal-object-rest-spread"
