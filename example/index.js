@@ -279,7 +279,7 @@ const Component = () => {
                   id="pin"
                   codeLength={4}
                   type="number"
-                  hide={true}
+                  hide={false}
                   placeholder=""
                   value={pin}
                   onChange={res => {
