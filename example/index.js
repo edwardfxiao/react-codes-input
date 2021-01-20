@@ -100,21 +100,86 @@ const Component = () => {
   const [activation, setActivation] = useState('');
   return (
     <div className={CSS['wrapper']}>
-      <div className={CSS['nav']}>
-        <div>
-          <h2>
-            <a href="#passwordSection">Example of password (type="alpha")</a>
-          </h2>
+      <div id="activationSection" className={CSS['example-section']}>
+        <div style={prefixAll({ flex: '0 0 50%' })}>
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+            }}
+          >
+            <div>
+              <div style={{ maxWidth: '300px', margin: '10px auto' }}>
+                <h3>Input type "alphanumeric"</h3>
+              </div>
+              <div>
+                <ReactCodesInput
+                  initialFocus={true}
+                  wrapperRef={$activationWrapperRef}
+                  id="activation"
+                  codeLength={6}
+                  type="alphanumeric"
+                  hide={false}
+                  placeholder=""
+                  disabled={false}
+                  value={activation}
+                  onChange={res => {
+                    setActivation(res);
+                  }}
+                  letterCase="upper"
+                  customStyleComponent={{ maxWidth: '300px', margin: '0 auto' }}
+                />
+              </div>
+            </div>
+            <div style={{ maxWidth: '300px', margin: '0 auto' }}>
+              <input
+                type="submit"
+                className="submit-btn"
+                onClick={() => {
+                  let isComplete = true;
+                  for (let index = 0; index < 6; index += 1) {
+                    if (typeof activation[index] === 'undefined') {
+                      $activationWrapperRef.current.children[index] && $activationWrapperRef.current.children[index].click();
+                      isComplete = false;
+                      break;
+                    }
+                  }
+                  if (!isComplete) {
+                    return;
+                  }
+                  if (activation.length === 6) {
+                    alert('activation success');
+                  }
+                }}
+              />
+            </div>
+          </form>
         </div>
-        <div>
-          <h2>
-            <a href="#pinSection">Example of pin (type="number")</a>
-          </h2>
-        </div>
-        <div>
-          <h2>
-            <a href="#pinSection">Example of activation code (type="alphanumeric")</a>
-          </h2>
+        <div style={prefixAll({ flex: '0 0 50%' })}>
+          <div style={{ fontSize: '12px' }}>
+            <Markdown
+              source={`\`\`\`javascript
+<ReactCodesInput
+  initialFocus={false}
+  wrapperRef={$activationWrapperRef}
+  id="activation"
+  codeLength={10}
+  type="alphanumeric" // ['alphanumeric', 'alpha', 'number']
+  hide={false}
+  placeholder=""
+  value={activation}
+  onChange={res => {
+    setActivation(res);
+  }}
+  letterCase="upper"
+  customStyleComponent={{
+    maxWidth: '300px',
+    margin: '0 auto'
+  }}
+/>
+ \`\`\``}
+              renderers={{ CodeBlock }}
+            />
+          </div>
         </div>
       </div>
       <div id="passwordSection" className={CSS['example-section']}>
@@ -122,18 +187,15 @@ const Component = () => {
           <form
             onSubmit={e => {
               e.preventDefault();
-              if (password.length === 6) {
-                alert('password success');
-              }
             }}
           >
             <div>
               <div style={{ maxWidth: '300px', margin: '10px auto' }}>
-                <h2>password (type="alpha")</h2>
+                <h3>Input type "alpha"</h3>
               </div>
               <div>
                 <ReactCodesInput
-                  initialFocus={true}
+                  initialFocus={false}
                   wrapperRef={$passwordWrapperRef}
                   id="password"
                   codeLength={6}
@@ -156,7 +218,7 @@ const Component = () => {
                   let isComplete = true;
                   for (let index = 0; index < 6; index += 1) {
                     if (typeof password[index] === 'undefined') {
-                      $passwordWrapperRef.current.children[index].click();
+                      $passwordWrapperRef.current.children[index] && $passwordWrapperRef.current.children[index].click();
                       isComplete = false;
                       break;
                     }
@@ -173,8 +235,9 @@ const Component = () => {
           </form>
         </div>
         <div style={prefixAll({ flex: '0 0 50%' })}>
-          <Markdown
-            source={`\`\`\`javascript
+          <div style={{ fontSize: '12px' }}>
+            <Markdown
+              source={`\`\`\`javascript
 <ReactCodesInput
   initialFocus={true}
   wrapperRef={$passwordWrapperRef}
@@ -193,8 +256,9 @@ const Component = () => {
   }}
 />
  \`\`\``}
-            renderers={{ CodeBlock }}
-          />
+              renderers={{ CodeBlock }}
+            />
+          </div>
         </div>
       </div>
       <div id="pinSection" className={CSS['example-section']}>
@@ -202,14 +266,11 @@ const Component = () => {
           <form
             onSubmit={e => {
               e.preventDefault();
-              if (pin.length === 4) {
-                alert('pin success');
-              }
             }}
           >
             <div>
               <div style={{ maxWidth: '300px', margin: '10px auto' }}>
-                <h2>pin (type="number")</h2>
+                <h3>Input type "number" only</h3>
               </div>
               <div>
                 <ReactCodesInput
@@ -218,7 +279,7 @@ const Component = () => {
                   id="pin"
                   codeLength={4}
                   type="number"
-                  hide={false}
+                  hide={true}
                   placeholder=""
                   value={pin}
                   onChange={res => {
@@ -234,9 +295,9 @@ const Component = () => {
                 className="submit-btn"
                 onClick={() => {
                   let isComplete = true;
-                  for (let index = 0; index < 6; index += 1) {
+                  for (let index = 0; index < 4; index += 1) {
                     if (typeof pin[index] === 'undefined') {
-                      $pinWrapperRef.current.children[index].click();
+                      $pinWrapperRef.current.children[index] && $pinWrapperRef.current.children[index].click();
                       isComplete = false;
                       break;
                     }
@@ -253,8 +314,9 @@ const Component = () => {
           </form>
         </div>
         <div style={prefixAll({ flex: '0 0 50%' })}>
-          <Markdown
-            source={`\`\`\`javascript
+          <div style={{ fontSize: '12px' }}>
+            <Markdown
+              source={`\`\`\`javascript
 <ReactCodesInput
   initialFocus={false}
   wrapperRef={$pinWrapperRef}
@@ -273,91 +335,9 @@ const Component = () => {
   }}
 />
  \`\`\``}
-            renderers={{ CodeBlock }}
-          />
-        </div>
-      </div>
-      <div id="activationSection" className={CSS['example-section']}>
-        <div style={prefixAll({ flex: '0 0 50%' })}>
-          <form
-            onSubmit={e => {
-              e.preventDefault();
-              if (activation.length === 4) {
-                alert('activation success');
-              }
-            }}
-          >
-            <div>
-              <div style={{ maxWidth: '300px', margin: '10px auto' }}>
-                <h2>activation (type="alphanumeric")</h2>
-              </div>
-              <div>
-                <ReactCodesInput
-                  initialFocus={false}
-                  wrapperRef={$activationWrapperRef}
-                  id="activation"
-                  codeLength={10}
-                  type="alphanumeric"
-                  hide={false}
-                  placeholder=""
-                  disabled={false}
-                  value={activation}
-                  onChange={res => {
-                    setActivation(res);
-                  }}
-                  letterCase="upper"
-                  customStyleComponent={{ maxWidth: '300px', margin: '0 auto' }}
-                />
-              </div>
-            </div>
-            <div style={{ maxWidth: '300px', margin: '0 auto' }}>
-              <input
-                type="submit"
-                className="submit-btn"
-                onClick={() => {
-                  let isComplete = true;
-                  for (let index = 0; index < 6; index += 1) {
-                    if (typeof activation[index] === 'undefined') {
-                      $activationWrapperRef.current.children[index].click();
-                      isComplete = false;
-                      break;
-                    }
-                  }
-                  if (!isComplete) {
-                    return;
-                  }
-                  if (activation.length === 4) {
-                    alert('activation success');
-                  }
-                }}
-              />
-            </div>
-          </form>
-        </div>
-        <div style={prefixAll({ flex: '0 0 50%' })}>
-          <Markdown
-            source={`\`\`\`javascript
-<ReactCodesInput
-  initialFocus={false}
-  wrapperRef={$activationWrapperRef}
-  id="activation"
-  codeLength={10}
-  type="alphanumeric" // ['alphanumeric', 'alpha', 'number']
-  hide={false}
-  placeholder=""
-  value={activation}
-  onChange={res => {
-    setActivation(res);
-  }}
-  letterCase="upper"
-  customStyleComponent={{
-    maxWidth: '300px',
-    margin: '0 auto'
-  }}
-/>
- \`\`\``}
-            renderers={{ CodeBlock }}
-          />
+              renderers={{ CodeBlock }}
+            />
+          </div>
         </div>
       </div>
     </div>

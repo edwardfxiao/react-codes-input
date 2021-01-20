@@ -3,10 +3,10 @@ import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_
 import CSS from './react-codes-input.css';
 if (!('classList' in document.documentElement)) {
   Object.defineProperty(HTMLElement.prototype, 'classList', {
-    get: function() {
+    get: function () {
       var self = this;
       function update(fn) {
-        return function(value) {
+        return function (value) {
           var classes = self.className.split(/\s+/g);
           var index = classes.indexOf(value);
           fn(classes, index, value);
@@ -14,23 +14,23 @@ if (!('classList' in document.documentElement)) {
         };
       }
       return {
-        add: update(function(classes, index, value) {
+        add: update(function (classes, index, value) {
           if (!~index) classes.push(value);
         }),
-        remove: update(function(classes, index) {
+        remove: update(function (classes, index) {
           if (~index) classes.splice(index, 1);
         }),
-        toggle: update(function(classes, index, value) {
+        toggle: update(function (classes, index, value) {
           if (~index) {
             classes.splice(index, 1);
           } else {
             classes.push(value);
           }
         }),
-        contains: function(value) {
+        contains: function (value) {
           return !!~self.className.split(/\s+/g).indexOf(value);
         },
-        item: function(i) {
+        item: function (i) {
           return self.className.split(/\s+/g)[i] || null;
         },
       };
@@ -90,18 +90,26 @@ const Index = ({
       window.removeEventListener('touchstart', pageClick);
     };
   }, []);
-  const keypressHandler = useCallback(e => {
-    const { keyCode } = e;
-    const keyCodeArrowLeft = 37;
-    const keyCodeArrowUp = 38;
-    const keyCodeArrowRight = 39;
-    const keyCodeArrowDown = 40;
-    const FILTERS = [keyCodeArrowLeft, keyCodeArrowUp, keyCodeArrowRight, keyCodeArrowDown];
-    if (FILTERS.indexOf(keyCode) >= 0) {
-      e.preventDefault();
-      return;
-    }
-  }, []);
+  const keypressHandler = useCallback(
+    e => {
+      const { keyCode } = e;
+      const keyCodeArrowLeft = 37;
+      const keyCodeArrowUp = 38;
+      const keyCodeArrowRight = 39;
+      const keyCodeArrowDown = 40;
+      const keyCodeE = 69;
+      const FILTERS = [keyCodeArrowLeft, keyCodeArrowUp, keyCodeArrowRight, keyCodeArrowDown];
+      if (FILTERS.indexOf(keyCode) >= 0) {
+        e.preventDefault();
+        return;
+      }
+      if (type === DEFAULT_TYPES[2] && keyCode === keyCodeE) {
+        e.preventDefault();
+        return;
+      }
+    },
+    [type],
+  );
   useEffect(() => {
     $component.current.addEventListener('keydown', keypressHandler, false);
     $component.current.addEventListener('keypress', keypressHandler, false);
@@ -109,10 +117,10 @@ const Index = ({
       $component.current.removeEventListener('keydown', keypressHandler);
       $component.current.removeEventListener('keypress', keypressHandler);
     };
-  }, []);
+  }, [type]);
   useEffect(() => {
     setCode(getCased(value, letterCase));
-  }, [value]);
+  }, [value, letterCase]);
   useEffect(() => {
     document.getElementById(id).removeAttribute('value');
   });
@@ -133,18 +141,29 @@ const Index = ({
         v = getAlphanumeric(res);
         break;
     }
+    if (type === DEFAULT_TYPES[2]) {
+      if (v.length > DEFAULT_CODES.length) {
+        return;
+      }
+    }
     v = getCased(v, letterCase);
     setCode(v);
     onChange && onChange(v);
-  }, []);
-  const handleOnCodeFocus = useCallback(e => {
-    const $el = e.target;
-    $el.selectionStart = $el.value.length;
+  }, [type, letterCase, DEFAULT_CODES]);
+  const handleOnCodeFocus = useCallback(() => {
     setIsFocus(true);
   }, []);
   const handleOnCodeBlur = useCallback(() => {
     setIsFocus(false);
   }, []);
+  const attributes = useMemo(() => {
+    const res = {};
+    if (type === DEFAULT_TYPES[2]) {
+      res['type'] = 'number';
+      res['pattern'] = '[0-9]*';
+    }
+    return res;
+  }, [type]);
   return (
     <div ref={$component} className={cx(CSS['component'], disabled && CSS['disabled'], classNameComponent)} style={customStyleComponent}>
       <div ref={wrapperRef} className={cx(CSS['wrapper'], classNameWrapper)} style={customStyleWrapper}>
@@ -194,7 +213,7 @@ const Index = ({
               style={customStyleCodeWrapper}
             >
               <div className={cx(CSS['entered-value'], classNameEnteredValue, hide && isEntered && CSS['hide'])} style={customStyleEnteredValue}>
-                {typeof code[k] === 'undefined' && <span style={{color: '#ddd', ...customStylePlaceholder}}>{placeholder.split('')[k]}</span>} {hide ? '' : code[k]}
+                {typeof code[k] === 'undefined' && <span style={{ color: '#ddd', ...customStylePlaceholder }}>{placeholder.split('')[k]}</span>} {hide ? '' : code[k]}
               </div>
               <div className={cx(CSS['code'], classNameCode)} style={customStyleCode}>
                 <div className={cx(CSS['code-wrapper--focus'], classNameCodeWrapperFocus)} style={{ ...focusStyle, ...customStyleCodeWrapperFocus }} />
@@ -218,6 +237,7 @@ const Index = ({
           opacity: '0',
           marginLeft: '-999px',
         }}
+        {...attributes}
       />
     </div>
   );
