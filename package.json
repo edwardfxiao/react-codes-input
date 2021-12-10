@@ -23,6 +23,7 @@
   },
   "homepage": "https://edwardfxiao.github.io/react-codes-input",
   "scripts": {
+    "test": "NODE_ENV=test jest",
     "test:coverage": "npm run jslint && npm test -- --coverage",
     "test_single": "node_modules/.bin/jest index.js --coverage",
     "prepublish": "npm run test:coverage",
