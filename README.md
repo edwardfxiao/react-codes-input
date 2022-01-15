@@ -16,8 +16,8 @@ A react component for PIN, verify code and passcode entering. Online demo exampl
 ### Version of ```16.8.6``` or higher of react and react-dom is required.
 ```js
   "peerDependencies": {
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react": ">= 16.8.6",
+    "react-dom": ">= 16.8.6"
   }
 ```
 

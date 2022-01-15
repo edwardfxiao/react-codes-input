@@ -1,6 +1,6 @@
 {
   "name": "react-codes-input",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "A react component for PIN, verify code and passcode entering.",
   "main": "index.js",
   "repository": {
@@ -43,8 +43,8 @@
     "compile": "npm run clean && npm run compile_webpack && npm run babel"
   },
   "peerDependencies": {
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react": ">= 16.8.6",
+    "react-dom": ">= 16.8.6"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
