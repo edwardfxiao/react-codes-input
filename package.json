@@ -1,6 +1,6 @@
 {
   "name": "react-codes-input",
-  "version": "1.2.4",
+  "version": "2.0.0",
   "description": "A react component for PIN, verify code and passcode entering.",
   "main": "index.js",
   "repository": {
