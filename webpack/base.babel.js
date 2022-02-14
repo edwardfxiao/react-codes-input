@@ -14,30 +14,15 @@ export default {
         test: /\.mp3?$/,
         include: [PATH.ROOT_PATH],
         exclude: [PATH.NODE_MODULES_PATH],
-        loader: 'file-loader',
-        options: {
-          name: 'audio/[name]-[hash].[ext]',
-        },
+        use: [{ loader: 'file-loader?name=audio/[name]-[hash].[ext]' }],
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf)\??.*$/,
-        include: [PATH.ROOT_PATH],
-        // exclude: [PATH.NODE_MODULES_PATH],
-        loader: 'url-loader',
-        options: {
-          limit: 1,
-          name: 'font/[name]-[hash].[ext]',
-        },
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
       },
       {
-        test: /\.(jpe?g|png|gif|svg)\??.*$/,
-        include: [PATH.ROOT_PATH],
-        // exclude: [PATH.NODE_MODULES_PATH],
-        loader: 'url-loader',
-        options: {
-          limit: 1,
-          name: 'img/[name]-[hash].[ext]',
-        },
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
       },
       {
         test: /\.jsx?$/,
