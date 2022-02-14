@@ -28,12 +28,11 @@
     "test_single": "node_modules/.bin/jest utils.js --coverage",
     "tslint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "prepublish": "npm run test:coverage",
-    "babel": "BABEL_ENV=lib babel ./src/js/Input --out-dir ./lib/components --extensions '.ts,.tsx'",
+    "build_gh_page": "rm -rf lib && rm -rf dist && NODE_ENV=production ./node_modules/.bin/webpack --config ./webpack/production.config.babel.js --progress",
     "umd_local": "./node_modules/.bin/webpack --config ./webpack/umd.local.config.babel.js",
     "umd_global": "./node_modules/.bin/webpack --config ./webpack/umd.global.config.babel.js",
     "umd_global_min": "./node_modules/.bin/webpack --config ./webpack/umd.global.config.babel.js --env minify",
     "dev": "node_modules/.bin/webpack-dev-server --config ./webpack/development.config.babel.js",
-    "build_gh_page": "rm -rf lib && npm run babel && rm -rf dist && NODE_ENV=production ./node_modules/.bin/webpack --config ./webpack/production.config.babel.js --progress",
     "compile": "rimraf dist lib && npm run umd_global && npm run umd_global_min && npm run umd_local && rm ./lib/components/*.css"
   },
   "peerDependencies": {
