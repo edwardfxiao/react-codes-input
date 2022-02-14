@@ -43,7 +43,8 @@ Tested on IE9+ and Chrome and Safari(10.0.3)
 |type                         |  Opt  |  Default    |Options are ['alphanumeric', 'alpha', 'number']|  "alphanumeric" |
 |letterCase                   |  Opt  |  Str        |Options are ['upper', 'lower']                 |  "upper"        |
 |value                        |  Req  |  Str        |                                               |  ""             |
-|hide                         |  Opt  |  Bool       |Options are ['false', 'true']                  |  false          |
+|disabled                     |  Opt  |  Bool       |Options are [false, true]                      |  false          |
+|hide                         |  Opt  |  Bool       |Options are [false, true]                      |  false          |
 |placeholder                  |  Opt  |  Str        |                                               |  ""          |
 |focusColor                   |  Opt  |  Str        |                                               |  "#007bff"      |
 |classNameComponent           |  Opt  |  Str        |                                               |  ""             |
