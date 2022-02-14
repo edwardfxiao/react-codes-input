@@ -1,4 +1,4 @@
-import ReactCodesInput from './index';
+import ReactCodesInput from './ReactCodesInput';
 if (typeof window !== 'undefined') {
   (<any>window).ReactCodesInput = ReactCodesInput;
 }

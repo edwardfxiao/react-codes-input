@@ -2,7 +2,7 @@ const baseConfig = require('./umd.base.config.babel.js');
 const PATH = require('./build_path');
 module.exports = {
 	...baseConfig,
-	entry: PATH.ROOT_PATH + 'src/js/Input/index.tsx',
+	entry: PATH.ROOT_PATH + 'src/js/Input/index.ts',
 	devtool: false,
 	output: {
 		...baseConfig.output,
