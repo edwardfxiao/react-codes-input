@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_TYPES } from './utils.js';
+import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_TYPES } from './utils';
 import CSS from './react-codes-input.css';
 if (!('classList' in document.documentElement)) {
   Object.defineProperty(HTMLElement.prototype, 'classList', {
     get: function () {
       var self = this;
-      function update(fn) {
-        return function (value) {
+      function update(fn: Function) {
+        return function (value: string) {
           var classes = self.className.split(/\s+/g);
           var index = classes.indexOf(value);
           fn(classes, index, value);
@@ -14,23 +14,23 @@ if (!('classList' in document.documentElement)) {
         };
       }
       return {
-        add: update(function (classes, index, value) {
+        add: update(function (classes: Array<string>, index: number, value: string) {
           if (!~index) classes.push(value);
         }),
-        remove: update(function (classes, index) {
+        remove: update(function (classes: Array<string>, index: number) {
           if (~index) classes.splice(index, 1);
         }),
-        toggle: update(function (classes, index, value) {
+        toggle: update(function (classes: Array<string>, index: number, value: string) {
           if (~index) {
             classes.splice(index, 1);
           } else {
             classes.push(value);
           }
         }),
-        contains: function (value) {
+        contains: function (value: string) {
           return !!~self.className.split(/\s+/g).indexOf(value);
         },
-        item: function (i) {
+        item: function (i: number) {
           return self.className.split(/\s+/g)[i] || null;
         },
       };
@@ -40,7 +40,38 @@ if (!('classList' in document.documentElement)) {
 const DEFAULT_ID = getRandomId();
 const DEFAULT_CODE_LENGTH = 6;
 const DEFAULT_TYPES = ['alphanumeric', 'alpha', 'number'];
-const Index = ({
+interface AttibutesObj {
+  type?: string;
+  pattern?: string;
+}
+interface Props {
+  initialFocus?: boolean,
+  wrapperRef: React.RefObject<HTMLInputElement>,
+  codeLength: number,
+  id: string,
+  onChange: (res: string) => void,
+  type?: string,
+  letterCase?: string,
+  value: string,
+  disabled?: boolean;
+  hide?: boolean;
+  focusColor?: string,
+  classNameComponent?: string,
+  classNameWrapper?: string,
+  classNameCodeWrapper?: string,
+  classNameEnteredValue?: string,
+  classNameCode?: string,
+  classNameCodeWrapperFocus?: string,
+  customStyleComponent?: React.CSSProperties,
+  customStyleWrapper?: React.CSSProperties,
+  customStyleCodeWrapper?: React.CSSProperties,
+  customStyleEnteredValue?: React.CSSProperties,
+  customStyleCode?: React.CSSProperties,
+  customStyleCodeWrapperFocus?: React.CSSProperties,
+  placeholder?: string,
+  customStylePlaceholder?: React.CSSProperties,
+}
+const Index: React.FC<Props> = ({
   initialFocus = false,
   wrapperRef,
   codeLength = DEFAULT_CODE_LENGTH,
@@ -125,7 +156,7 @@ const Index = ({
     document.getElementById(id).removeAttribute('value');
   });
   const handleOnCodeChange = useCallback(() => {
-    const res = document.getElementById(id).value;
+    const res = (document.getElementById(id) as HTMLInputElement).value;
     let v = '';
     switch (type) {
       case DEFAULT_TYPES[0]:
@@ -157,7 +188,7 @@ const Index = ({
     setIsFocus(false);
   }, []);
   const attributes = useMemo(() => {
-    const res = {};
+    const res: AttibutesObj = {};
     if (type === DEFAULT_TYPES[2]) {
       res['type'] = 'number';
       res['pattern'] = '[0-9]*';
@@ -171,7 +202,7 @@ const Index = ({
           const isLastItem = k === DEFAULT_CODES.length - 1 ? true : false;
           const isEntered = typeof code[k] === 'undefined' ? false : true;
           let isActive = false;
-          const focusStyle = {};
+          const focusStyle: React.CSSProperties = {};
           if (isFocus) {
             if (code.length === k) {
               isActive = true;

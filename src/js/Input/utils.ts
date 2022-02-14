@@ -1,6 +1,6 @@
 export const CASE_TYPES = ['upper', 'lower'];
 
-export const cx = (...params) => {
+export const cx = (...params: Array<any>) => {
   const classes = [];
   for (let i = 0; i < params.length; i += 1) {
     const arg = params[i];
@@ -9,7 +9,7 @@ export const cx = (...params) => {
     if (argType === 'string' || argType === 'number') {
       classes.push(arg);
     } else if (Array.isArray(arg) && arg.length) {
-      const inner = cx.apply(null, arg);
+      const inner: string = cx.apply(null, arg);
       if (inner) {
         classes.push(inner);
       }
@@ -25,12 +25,10 @@ export const cx = (...params) => {
 };
 
 export const getRandomId = () => {
-  return Math.random()
-    .toString(36)
-    .slice(-8);
+  return Math.random().toString(36).slice(-8);
 };
 
-export const getAlphanumeric = v => {
+export const getAlphanumeric = (v: string) => {
   let res = '';
   String(v)
     .split('')
@@ -43,7 +41,7 @@ export const getAlphanumeric = v => {
   return res;
 };
 
-export const getAlpha = v => {
+export const getAlpha = (v: string) => {
   let res = '';
   String(v)
     .split('')
@@ -56,28 +54,26 @@ export const getAlpha = v => {
   return res;
 };
 
-export const getNumeric = v => {
+export const getNumeric = (v: string) => {
   let res = '';
-  String(v)
-    .split('')
-    .forEach(i => {
-      const charCode = i.toLowerCase().charCodeAt(0);
-      if (charCode >= 48 && charCode <= 57) {
-        res += i;
-      }
-    });
+  v.split('').forEach(i => {
+    const charCode = i.toLowerCase().charCodeAt(0);
+    if (charCode >= 48 && charCode <= 57) {
+      res += i;
+    }
+  });
   return res;
 };
-export const getCased = (v, type) => {
+export const getCased = (v: string, type: string) => {
   const index = CASE_TYPES.indexOf(type);
   if (index >= 0) {
     switch (index) {
       case 0:
-        return String(v).toUpperCase();
+        return v.toUpperCase();
       case 1:
-        return String(v).toLowerCase();
+        return v.toLowerCase();
     }
   } else {
-    return String(v).toUpperCase();
+    return v.toUpperCase();
   }
 };

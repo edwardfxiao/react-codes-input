@@ -1,9 +1,9 @@
-const webpack = require('webpack');
-const path = require('path');
-const PATH = require('./build_path');
-const WebpackAssetsManifest = require('webpack-assets-manifest');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-var config = (module.exports = {
+import webpack from 'webpack';
+import path from 'path';
+import PATH from './build_path';
+import WebpackAssetsManifest from 'webpack-assets-manifest';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+export default {
   context: PATH.ROOT_PATH,
   entry: {
     index: PATH.ROOT_PATH + 'example/index.js',
@@ -43,18 +43,15 @@ var config = (module.exports = {
         test: /\.jsx?$/,
         include: [PATH.ROOT_PATH],
         exclude: [PATH.NODE_MODULES_PATH],
-        enforce: 'pre',
-        loader: 'eslint-loader',
-        options: {
-          emitWarning: true,
-        },
+        enforce: 'post',
+        loader: 'babel-loader',
       },
       {
-        test: /\.jsx?$/,
+        test: /\.(ts|tsx)$/,
         include: [PATH.ROOT_PATH],
         exclude: [PATH.NODE_MODULES_PATH],
         enforce: 'post',
-        loader: 'babel-loader',
+        loader: 'ts-loader',
       },
       {
         test: /\.css$/,
@@ -64,20 +61,17 @@ var config = (module.exports = {
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
-            options: {
-              importLoaders: 1,
-            },
+            options: {},
           },
           {
             loader: 'postcss-loader',
             options: {
-              plugins: loader => [
-                require('postcss-import')({
-                  root: loader.resourcePath,
-                }),
-                require('autoprefixer')(),
-                require('cssnano')(),
-              ],
+              postcssOptions: {
+                plugins: [
+                  ['postcss-import', {}],
+                  ['postcss-preset-env', {}],
+                ],
+              },
             },
           },
         ],
@@ -93,21 +87,20 @@ var config = (module.exports = {
             loader: 'css-loader',
             options: {
               modules: {
-                localIdentName: '[name]__[local]___[hash:base64:5]',
+                localIdentName: '[path][name]__[local]--[hash:base64:5]',
               },
-              importLoaders: 1,
             },
           },
           {
             loader: 'postcss-loader',
             options: {
-              plugins: loader => [
-                require('postcss-import')({
-                  root: loader.resourcePath,
-                }),
-                require('autoprefixer')(),
-                require('cssnano')({ safe: true }),
-              ],
+              postcssOptions: {
+                plugins: [
+                  ['postcss-import', {}],
+                  ['postcss-preset-env', { stage: 0 }],
+                  ['cssnano', { safe: true }],
+                ],
+              },
             },
           },
         ],
@@ -117,15 +110,32 @@ var config = (module.exports = {
   resolve: {
     modules: ['node_modules', path.resolve(__dirname, 'app')],
     extensions: ['.ts', '.tsx', '.js', '.json', '.jsx', '.css'],
+    fallback: {
+      path: false,
+    },
   },
   devtool: 'source-map',
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
     compress: true,
-    disableHostCheck: true,
-    historyApiFallback: true,
     host: '0.0.0.0',
     port: 9000,
+    // https: {
+    //   cert: helper.ROOT_PATH + 'src/https/cert.pem', // path to cert,
+    //   key: helper.ROOT_PATH + 'src/https/key.pem', // path to key,
+    // },
+    historyApiFallback: true,
+    client: { overlay: false },
+    static: [
+      {
+        directory: path.join(__dirname, 'dist'),
+        watch: true,
+      },
+    ],
+    devMiddleware: {
+      writeToDisk: filePath => {
+        return /\.css$/.test(filePath);
+      },
+    },
   },
   plugins: [
     new webpack.ContextReplacementPlugin(/\.\/locale$/, 'empty-module', false, /js$/),
@@ -136,7 +146,7 @@ var config = (module.exports = {
       'window.React': 'React',
     }),
     new WebpackAssetsManifest({
-      fileName: 'manifest-rev.json',
+      output: 'manifest-rev.json',
     }),
   ],
-});
+};

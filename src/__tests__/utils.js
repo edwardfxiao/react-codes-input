@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { getCased, getNumeric, getAlpha, getAlphanumeric, cx, getRandomId } from '../js/Input/utils.js';
+import { getCased, getNumeric, getAlpha, getAlphanumeric, cx, getRandomId } from '../js/Input/utils.ts';
 
 describe('message', () => {
   it('[getCased]: Should return FOOBAR', () => {
