@@ -110,7 +110,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/edwardfxiao"><img src="https://avatars.githubusercontent.com/u/11728228?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Edward Xiao</b></sub></a><br /><a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/edwardfxiao"><img src="https://avatars.githubusercontent.com/u/11728228?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Edward Xiao</b></sub></a><br /><a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Code">💻</a> <a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Documentation">📖</a> <a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Tests">⚠️</a> <a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Reviewed Pull Requests">👀</a></td>
   </tr>
 </table>
 
