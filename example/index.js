@@ -9,7 +9,7 @@ import prefixAll from 'inline-style-prefix-all';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
 import CSS from '../src/css/example.css';
-import ReactCodesInput from '../src/js/Input/index.tsx';
+import ReactCodesInput from '../src/js/Input/index.ts';
 
 const markdownTextboxEmptyExample = `
 \`\`\`javascript
