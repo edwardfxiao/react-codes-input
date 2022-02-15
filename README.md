@@ -77,7 +77,8 @@ import 'react-codes-input/lib/react-codes-input.min.css';
   type="" // Opt. Str. Default "alphanumeric". Options are ['alphanumeric', 'alpha', 'number'].
   letterCase="upper" // Opt. Str. Default "upper". Options are ['upper', 'lower'].
   value="" // Req. Str. Default "".
-  hide={false} // Opt. Bool. Default false. Options are ['false', 'true'].
+  disabled={false} // Opt. Bool. Default false. Options are [false, true].
+  hide={false} // Opt. Bool. Default false. Options are [false, true].
   placeholder="" // Opt. Str. Default "".
   focusColor="" // Opt. Str. Default "007bff".
   classNameComponent="" // Opt. Str. Default "".
