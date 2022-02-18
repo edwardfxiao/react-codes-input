@@ -6,7 +6,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 export default {
   context: PATH.ROOT_PATH,
   entry: {
-    index: PATH.ROOT_PATH + 'example/index.js',
+    index: PATH.ROOT_PATH + 'example/index.tsx',
   },
   module: {
     rules: [

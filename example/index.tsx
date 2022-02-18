@@ -1,11 +1,10 @@
 import 'raf/polyfill';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef } from 'react';
 import ReactDOM from 'react-dom';
-import prefixAll from 'inline-style-prefix-all';
 import CSS from '../src/css/example.css';
-import ReactCodesInput from '../src/js/Input/index.ts';
+import ReactCodesInput from '../src/js/Input/index';
 
 const Component = () => {
   const $passwordWrapperRef = useRef(null);
@@ -17,7 +16,7 @@ const Component = () => {
   return (
     <div className={CSS['wrapper']}>
       <div id="activationSection" className={CSS['example-section']}>
-        <div style={prefixAll({ flex: '0 0 50%' })}>
+        <div style={{ flex: '0 0 50%' }}>
           <form
             onSubmit={e => {
               e.preventDefault();
@@ -70,12 +69,12 @@ const Component = () => {
             </div>
           </form>
         </div>
-        <div style={prefixAll({ flex: '0 0 50%' })}>
+        <div style={{ flex: '0 0 50%' }}>
           <div style={{ fontSize: '12px' }}></div>
         </div>
       </div>
       <div id="passwordSection" className={CSS['example-section']}>
-        <div style={prefixAll({ flex: '0 0 50%' })}>
+        <div style={{ flex: '0 0 50%' }}>
           <form
             onSubmit={e => {
               e.preventDefault();
@@ -126,12 +125,12 @@ const Component = () => {
             </div>
           </form>
         </div>
-        <div style={prefixAll({ flex: '0 0 50%' })}>
+        <div style={{ flex: '0 0 50%' }}>
           <div style={{ fontSize: '12px' }}></div>
         </div>
       </div>
       <div id="pinSection" className={CSS['example-section']}>
-        <div style={prefixAll({ flex: '0 0 50%' })}>
+        <div style={{ flex: '0 0 50%' }}>
           <form
             onSubmit={e => {
               e.preventDefault();
@@ -182,7 +181,7 @@ const Component = () => {
             </div>
           </form>
         </div>
-        <div style={prefixAll({ flex: '0 0 50%' })}>
+        <div style={{ flex: '0 0 50%' }}>
           <div style={{ fontSize: '12px' }}></div>
         </div>
       </div>
