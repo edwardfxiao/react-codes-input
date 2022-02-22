@@ -71,7 +71,7 @@ export interface Props {
   placeholder?: string,
   customStylePlaceholder?: React.CSSProperties,
 }
-const Index: React.FC<Props> = ({
+const ReactCodesInput: React.FC<Props> = ({
   initialFocus = false,
   wrapperRef,
   codeLength = DEFAULT_CODE_LENGTH,
@@ -274,4 +274,4 @@ const Index: React.FC<Props> = ({
   );
 };
 
-export default Index;
+export default ReactCodesInput;
