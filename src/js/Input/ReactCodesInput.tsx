@@ -44,7 +44,7 @@ interface AttibutesObj {
   type?: string;
   pattern?: string;
 }
-export interface Props {
+export interface ReactCodesInputProps {
   initialFocus?: boolean,
   wrapperRef: React.RefObject<HTMLInputElement>,
   codeLength: number,
@@ -71,7 +71,7 @@ export interface Props {
   placeholder?: string,
   customStylePlaceholder?: React.CSSProperties,
 }
-const ReactCodesInput: React.FC<Props> = ({
+const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   initialFocus = false,
   wrapperRef,
   codeLength = DEFAULT_CODE_LENGTH,
