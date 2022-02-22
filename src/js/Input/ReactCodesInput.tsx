@@ -44,7 +44,7 @@ interface AttibutesObj {
   type?: string;
   pattern?: string;
 }
-interface Props {
+export interface Props {
   initialFocus?: boolean,
   wrapperRef: React.RefObject<HTMLInputElement>,
   codeLength: number,
