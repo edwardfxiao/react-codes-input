@@ -143,16 +143,16 @@ const Component = () => {
               <div>
                 <ReactCodesInput
                   initialFocus={false}
-                  // wrapperRef={$pinWrapperRef}
+                  wrapperRef={$pinWrapperRef}
                   id="pin"
                   codeLength={4}
                   type="number"
                   hide={true}
                   placeholder=""
-                  // value={pin}
-                  // onChange={(res: any) => {
-                  //   setPin(res);
-                  // }
+                  value={pin}
+                  onChange={(res: any) => {
+                    setPin(res);
+                  }}
                   customStyleComponent={{ maxWidth: '300px', margin: '0 auto' }}
                 />
               </div>
