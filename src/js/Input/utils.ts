@@ -79,3 +79,4 @@ export const getCased = (v: string, type: string) => {
     return v.toUpperCase();
   }
 };
+export const getClassName = (className: string) => `rci-${className}`

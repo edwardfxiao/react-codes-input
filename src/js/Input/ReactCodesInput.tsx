@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_TYPES } from './utils';
+import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_TYPES, getClassName } from './utils';
 import CSS from './react-codes-input.css';
 if (!('classList' in document.documentElement)) {
   Object.defineProperty(HTMLElement.prototype, 'classList', {
@@ -202,8 +202,26 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
     return res;
   }, [type]);
   return (
-    <div ref={$component} className={cx(CSS['component'], disabled && CSS['disabled'], classNameComponent)} style={customStyleComponent}>
-      <div ref={wrapperRef} className={cx(CSS['wrapper'], classNameWrapper)} style={customStyleWrapper}>
+    <div
+        ref={$component}
+        className={cx(
+            CSS['component'],
+            getClassName('component'),
+            disabled && CSS['disabled'],
+            disabled && getClassName('disabled'),
+            classNameComponent,
+        )}
+        style={customStyleComponent}
+    >
+      <div
+          ref={wrapperRef}
+          className={cx(
+              CSS['wrapper'],
+              getClassName('wrapper'),
+              classNameWrapper,
+          )}
+          style={customStyleWrapper}
+      >
         {DEFAULT_CODES.map((i, k) => {
           const isLastItem = k === DEFAULT_CODES.length - 1 ? true : false;
           const isEntered = typeof code[k] === 'undefined' ? false : true;
@@ -246,14 +264,34 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
                 }
                 document.getElementById(id).focus();
               }}
-              className={cx(CSS['code-wrapper'], classNameCodeWrapper, isActive && CSS['active'], isEntered && CSS['entered'])}
+              className={cx(
+                  CSS['code-wrapper'],
+                  getClassName('code-wrapper'),
+                  classNameCodeWrapper,
+                  isActive && CSS['active'],
+                  isActive && getClassName('active'),
+                  isEntered && CSS['entered'],
+                  isEntered && getClassName('entered'),
+              )}
               style={customStyleCodeWrapper}
             >
-              <div className={cx(CSS['entered-value'], classNameEnteredValue, hide && isEntered && CSS['hide'])} style={customStyleEnteredValue}>
+              <div
+                  className={cx(
+                      CSS['entered-value'],
+                      getClassName('entered-value'),
+                      classNameEnteredValue,
+                      hide && isEntered && CSS['hide'],
+                      hide && isEntered && getClassName('hide'),
+                  )}
+                  style={customStyleEnteredValue}
+              >
                 {typeof code[k] === 'undefined' && <span style={{ color: '#ddd', ...customStylePlaceholder }}>{placeholder.split('')[k]}</span>} {hide ? '' : code[k]}
               </div>
-              <div className={cx(CSS['code'], classNameCode)} style={customStyleCode}>
-                <div className={cx(CSS['code-wrapper--focus'], classNameCodeWrapperFocus)} style={{ ...focusStyle, ...customStyleCodeWrapperFocus }} />
+              <div className={cx(CSS['code'], getClassName('code'), classNameCode)} style={customStyleCode}>
+                <div
+                    className={cx(CSS['code-wrapper--focus'], getClassName('code-wrapper--focus'), classNameCodeWrapperFocus)}
+                    style={{ ...focusStyle, ...customStyleCodeWrapperFocus }}
+                />
               </div>
             </div>
           );
