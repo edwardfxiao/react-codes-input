@@ -39,20 +39,24 @@ if (!('classList' in document.documentElement)) {
 }
 const DEFAULT_ID = getRandomId();
 const DEFAULT_CODE_LENGTH = 6;
-const DEFAULT_TYPES = ['alphanumeric', 'alpha', 'number'];
+export enum DEFAULT_TYPES {
+  ALPHANUMERTIC = 'alphanumeric',
+  ALPHA = 'alpha',
+  NUMBER = 'number',
+}
 interface AttibutesObj {
   type?: string;
   pattern?: string;
 }
 export interface ReactCodesInputProps {
+  wrapperRef?: React.RefObject<HTMLInputElement>,
+  value?: string,
+  onChange?: (value: string) => void,
   initialFocus?: boolean,
-  wrapperRef: React.RefObject<HTMLInputElement>,
-  codeLength: number,
-  id: string,
-  onChange: (res: string) => void,
-  type?: string,
-  letterCase?: string,
-  value: string,
+  codeLength?: number,
+  id?: string,
+  type?: 'number' | 'alpha' | 'alphanumeric',
+  letterCase?: 'upper' | 'lower',
   disabled?: boolean;
   hide?: boolean;
   focusColor?: string,
@@ -77,8 +81,8 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   codeLength = DEFAULT_CODE_LENGTH,
   id = DEFAULT_ID,
   onChange,
-  type = DEFAULT_TYPES[0],
-  letterCase = CASE_TYPES[0],
+  type = DEFAULT_TYPES.ALPHANUMERTIC,
+  letterCase = CASE_TYPES.UPPERCASE,
   value = '',
   disabled = false,
   hide = false,
@@ -99,7 +103,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   customStylePlaceholder = {},
 }) => {
   const DEFAULT_CODES = useMemo(() => [...Array(codeLength).keys()], []);
-  const [code, setCode] = useState(value);
+  const [code, setCode] = useState<string>(value);
   const [isFocus, setIsFocus] = useState(false);
   const $component = useRef(null);
   const pageClick = useCallback(e => {
@@ -134,7 +138,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
         e.preventDefault();
         return;
       }
-      if (type === DEFAULT_TYPES[2] && keyCode === keyCodeE) {
+      if (type === DEFAULT_TYPES.NUMBER && keyCode === keyCodeE) {
         e.preventDefault();
         return;
       }
@@ -159,27 +163,29 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
     const res = (document.getElementById(id) as HTMLInputElement).value;
     let v = '';
     switch (type) {
-      case DEFAULT_TYPES[0]:
+      case DEFAULT_TYPES.ALPHANUMERTIC:
         v = getAlphanumeric(res);
         break;
-      case DEFAULT_TYPES[1]:
+      case DEFAULT_TYPES.ALPHA:
         v = getAlpha(res);
         break;
-      case DEFAULT_TYPES[2]:
+      case DEFAULT_TYPES.NUMBER:
         v = getNumeric(res);
         break;
       default:
         v = getAlphanumeric(res);
         break;
     }
-    if (type === DEFAULT_TYPES[2]) {
+    if (type === DEFAULT_TYPES.NUMBER) {
       if (v.length > DEFAULT_CODES.length) {
         return;
       }
     }
     v = getCased(v, letterCase);
     setCode(v);
-    onChange && onChange(v);
+    if (typeof onChange === 'function') {
+      onChange(v)
+    }
   }, [type, letterCase, DEFAULT_CODES]);
   const handleOnCodeFocus = useCallback(() => {
     setIsFocus(true);
@@ -189,7 +195,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   }, []);
   const attributes = useMemo(() => {
     const res: AttibutesObj = {};
-    if (type === DEFAULT_TYPES[2]) {
+    if (type === DEFAULT_TYPES.NUMBER) {
       res['type'] = 'number';
       res['pattern'] = '[0-9]*';
     }

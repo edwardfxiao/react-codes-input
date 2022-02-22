@@ -37,7 +37,7 @@ const Component = () => {
                   placeholder=""
                   disabled={false}
                   value={activation}
-                  onChange={res => {
+                  onChange={(res: any) => {
                     setActivation(res);
                   }}
                   letterCase="upper"
@@ -94,7 +94,7 @@ const Component = () => {
                   hide={true}
                   placeholder=""
                   value={password}
-                  onChange={res => {
+                  onChange={(res: any) => {
                     setPassword(res);
                   }}
                   customStyleComponent={{ maxWidth: '300px', margin: '0 auto' }}
@@ -143,16 +143,16 @@ const Component = () => {
               <div>
                 <ReactCodesInput
                   initialFocus={false}
-                  wrapperRef={$pinWrapperRef}
+                  // wrapperRef={$pinWrapperRef}
                   id="pin"
                   codeLength={4}
                   type="number"
                   hide={true}
                   placeholder=""
-                  value={pin}
-                  onChange={res => {
-                    setPin(res);
-                  }}
+                  // value={pin}
+                  // onChange={(res: any) => {
+                  //   setPin(res);
+                  // }
                   customStyleComponent={{ maxWidth: '300px', margin: '0 auto' }}
                 />
               </div>

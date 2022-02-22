@@ -1,4 +1,7 @@
-export const CASE_TYPES = ['upper', 'lower'];
+export enum CASE_TYPES {
+  UPPERCASE = 'upper',
+  LOWERCASE = 'lower',
+};
 
 export const cx = (...params: Array<any>) => {
   const classes = [];
@@ -65,12 +68,11 @@ export const getNumeric = (v: string) => {
   return res;
 };
 export const getCased = (v: string, type: string) => {
-  const index = CASE_TYPES.indexOf(type);
-  if (index >= 0) {
-    switch (index) {
-      case 0:
+  if (type) {
+    switch (type) {
+      case CASE_TYPES.UPPERCASE:
         return v.toUpperCase();
-      case 1:
+      case CASE_TYPES.LOWERCASE:
         return v.toLowerCase();
     }
   } else {
