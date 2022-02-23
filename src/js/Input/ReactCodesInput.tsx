@@ -49,31 +49,31 @@ interface AttibutesObj {
   pattern?: string;
 }
 export interface ReactCodesInputProps {
-  wrapperRef?: React.RefObject<HTMLInputElement>,
-  value?: string,
-  onChange?: (value: string) => void,
-  initialFocus?: boolean,
-  codeLength?: number,
-  id?: string,
-  type?: 'number' | 'alpha' | 'alphanumeric',
-  letterCase?: 'upper' | 'lower',
+  wrapperRef?: React.RefObject<HTMLInputElement>;
+  value?: string;
+  onChange?: (value: string) => void;
+  initialFocus?: boolean;
+  codeLength?: number;
+  id?: string;
+  type?: 'number' | 'alpha' | 'alphanumeric';
+  letterCase?: 'upper' | 'lower';
   disabled?: boolean;
   hide?: boolean;
-  focusColor?: string,
-  classNameComponent?: string,
-  classNameWrapper?: string,
-  classNameCodeWrapper?: string,
-  classNameEnteredValue?: string,
-  classNameCode?: string,
-  classNameCodeWrapperFocus?: string,
-  customStyleComponent?: React.CSSProperties,
-  customStyleWrapper?: React.CSSProperties,
-  customStyleCodeWrapper?: React.CSSProperties,
-  customStyleEnteredValue?: React.CSSProperties,
-  customStyleCode?: React.CSSProperties,
-  customStyleCodeWrapperFocus?: React.CSSProperties,
-  placeholder?: string,
-  customStylePlaceholder?: React.CSSProperties,
+  focusColor?: string;
+  classNameComponent?: string;
+  classNameWrapper?: string;
+  classNameCodeWrapper?: string;
+  classNameEnteredValue?: string;
+  classNameCode?: string;
+  classNameCodeWrapperFocus?: string;
+  customStyleComponent?: React.CSSProperties;
+  customStyleWrapper?: React.CSSProperties;
+  customStyleCodeWrapper?: React.CSSProperties;
+  customStyleEnteredValue?: React.CSSProperties;
+  customStyleCode?: React.CSSProperties;
+  customStyleCodeWrapperFocus?: React.CSSProperties;
+  placeholder?: string;
+  customStylePlaceholder?: React.CSSProperties;
 }
 const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   initialFocus = false,
@@ -104,6 +104,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
 }) => {
   const DEFAULT_CODES = useMemo(() => [...Array(codeLength).keys()], []);
   const [code, setCode] = useState<string>(value);
+  const [pressKey, setPressKey] = useState({ key: undefined });
   const [isFocus, setIsFocus] = useState(false);
   const $component = useRef(null);
   const pageClick = useCallback(e => {
@@ -125,72 +126,73 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
       window.removeEventListener('touchstart', pageClick);
     };
   }, []);
-  const keypressHandler = useCallback(
-    e => {
-      const { keyCode } = e;
-      const keyCodeArrowLeft = 37;
-      const keyCodeArrowUp = 38;
-      const keyCodeArrowRight = 39;
-      const keyCodeArrowDown = 40;
-      const keyCodeE = 69;
-      const FILTERS = [keyCodeArrowLeft, keyCodeArrowUp, keyCodeArrowRight, keyCodeArrowDown];
-      if (FILTERS.indexOf(keyCode) >= 0) {
-        e.preventDefault();
+  const onKeyDown = useCallback(
+    (key: string) => {
+      const FILTERS = ['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'];
+      if (FILTERS.indexOf(key) >= 0) {
         return;
       }
-      if (type === DEFAULT_TYPES.NUMBER && keyCode === keyCodeE) {
-        e.preventDefault();
+      if (type === DEFAULT_TYPES.NUMBER && key.toLowerCase() === 'e') {
         return;
       }
+      handleOnCodeChange(key);
     },
-    [type],
+    [type, code],
   );
   useEffect(() => {
-    $component.current.addEventListener('keydown', keypressHandler, false);
-    $component.current.addEventListener('keypress', keypressHandler, false);
-    return () => {
-      $component.current.removeEventListener('keydown', keypressHandler);
-      $component.current.removeEventListener('keypress', keypressHandler);
-    };
-  }, [type]);
+    if (pressKey.key) {
+      onKeyDown(pressKey.key);
+    }
+  }, [pressKey]);
+  // useEffect(() => {
+  //   $component.current.addEventListener('keydown', keypressHandler, false);
+  //   $component.current.addEventListener('keypress', keypressHandler, false);
+  //   return () => {
+  //     $component.current.removeEventListener('keydown', keypressHandler);
+  //     $component.current.removeEventListener('keypress', keypressHandler);
+  //   };
+  // }, [type]);
   useEffect(() => {
     setCode(getCased(value, letterCase));
   }, [value, letterCase]);
   useEffect(() => {
     document.getElementById(id).removeAttribute('value');
   });
-  const handleOnCodeChange = useCallback(() => {
-    const res = (document.getElementById(id) as HTMLInputElement).value;
-    let v = '';
-    switch (type) {
-      case DEFAULT_TYPES.ALPHANUMERTIC:
-        v = getAlphanumeric(res);
-        break;
-      case DEFAULT_TYPES.ALPHA:
-        v = getAlpha(res);
-        break;
-      case DEFAULT_TYPES.NUMBER:
-        v = getNumeric(res);
-        break;
-      default:
-        v = getAlphanumeric(res);
-        break;
-    }
-    if (type === DEFAULT_TYPES.NUMBER) {
-      if (v.length > DEFAULT_CODES.length) {
+  const handleOnCodeChange = useCallback(
+    res => {
+      let v = '';
+      switch (type) {
+        case DEFAULT_TYPES.ALPHANUMERTIC:
+          v = getAlphanumeric(res);
+          break;
+        case DEFAULT_TYPES.ALPHA:
+          v = getAlpha(res);
+          break;
+        case DEFAULT_TYPES.NUMBER:
+          v = getNumeric(res);
+          break;
+        default:
+          v = getAlphanumeric(res);
+          break;
+      }
+      v = getCased(v, letterCase);
+      const newCode = res === 'Backspace' ? code.substring(0, code.length - 1) : `${code}${v}`;
+      if (newCode.length > DEFAULT_CODES.length) {
         return;
       }
-    }
-    v = getCased(v, letterCase);
-    setCode(v);
-    if (typeof onChange === 'function') {
-      onChange(v)
-    }
-  }, [type, letterCase, DEFAULT_CODES]);
+      setCode(newCode);
+      if (typeof onChange === 'function') {
+        onChange(newCode);
+      }
+    },
+    [type, letterCase, DEFAULT_CODES, code],
+  );
   const handleOnCodeFocus = useCallback(() => {
+    console.log('focus');
     setIsFocus(true);
   }, []);
   const handleOnCodeBlur = useCallback(() => {
+    console.log('blur');
     setIsFocus(false);
   }, []);
   const attributes = useMemo(() => {
@@ -203,25 +205,11 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   }, [type]);
   return (
     <div
-        ref={$component}
-        className={cx(
-            CSS['component'],
-            getClassName('component'),
-            disabled && CSS['disabled'],
-            disabled && getClassName('disabled'),
-            classNameComponent,
-        )}
-        style={customStyleComponent}
+      ref={$component}
+      className={cx(CSS['component'], getClassName('component'), disabled && CSS['disabled'], disabled && getClassName('disabled'), classNameComponent)}
+      style={customStyleComponent}
     >
-      <div
-          ref={wrapperRef}
-          className={cx(
-              CSS['wrapper'],
-              getClassName('wrapper'),
-              classNameWrapper,
-          )}
-          style={customStyleWrapper}
-      >
+      <div ref={wrapperRef} className={cx(CSS['wrapper'], getClassName('wrapper'), classNameWrapper)} style={customStyleWrapper}>
         {DEFAULT_CODES.map((i, k) => {
           const isLastItem = k === DEFAULT_CODES.length - 1 ? true : false;
           const isEntered = typeof code[k] === 'undefined' ? false : true;
@@ -265,33 +253,24 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
                 document.getElementById(id).focus();
               }}
               className={cx(
-                  CSS['code-wrapper'],
-                  getClassName('code-wrapper'),
-                  classNameCodeWrapper,
-                  isActive && CSS['active'],
-                  isActive && getClassName('active'),
-                  isEntered && CSS['entered'],
-                  isEntered && getClassName('entered'),
+                CSS['code-wrapper'],
+                getClassName('code-wrapper'),
+                classNameCodeWrapper,
+                isActive && CSS['active'],
+                isActive && getClassName('active'),
+                isEntered && CSS['entered'],
+                isEntered && getClassName('entered'),
               )}
               style={customStyleCodeWrapper}
             >
               <div
-                  className={cx(
-                      CSS['entered-value'],
-                      getClassName('entered-value'),
-                      classNameEnteredValue,
-                      hide && isEntered && CSS['hide'],
-                      hide && isEntered && getClassName('hide'),
-                  )}
-                  style={customStyleEnteredValue}
+                className={cx(CSS['entered-value'], getClassName('entered-value'), classNameEnteredValue, hide && isEntered && CSS['hide'], hide && isEntered && getClassName('hide'))}
+                style={customStyleEnteredValue}
               >
                 {typeof code[k] === 'undefined' && <span style={{ color: '#ddd', ...customStylePlaceholder }}>{placeholder.split('')[k]}</span>} {hide ? '' : code[k]}
               </div>
               <div className={cx(CSS['code'], getClassName('code'), classNameCode)} style={customStyleCode}>
-                <div
-                    className={cx(CSS['code-wrapper--focus'], getClassName('code-wrapper--focus'), classNameCodeWrapperFocus)}
-                    style={{ ...focusStyle, ...customStyleCodeWrapperFocus }}
-                />
+                <div className={cx(CSS['code-wrapper--focus'], getClassName('code-wrapper--focus'), classNameCodeWrapperFocus)} style={{ ...focusStyle, ...customStyleCodeWrapperFocus }} />
               </div>
             </div>
           );
@@ -304,9 +283,12 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
         value={code}
         disabled={disabled}
         maxLength={DEFAULT_CODES.length}
-        onChange={handleOnCodeChange}
+        onChange={() => {}}
         onFocus={handleOnCodeFocus}
         onBlur={handleOnCodeBlur}
+        onKeyDown={e => {
+          setPressKey({ key: e.key });
+        }}
         style={{
           position: 'absolute',
           opacity: '0',
@@ -314,6 +296,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
         }}
         {...attributes}
       />
+      {code}
     </div>
   );
 };
