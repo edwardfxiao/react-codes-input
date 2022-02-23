@@ -17,6 +17,16 @@
         "test",
         "review"
       ]
+    },
+    {
+      "login": "bulhiCzar",
+      "name": "bulhiCzar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/70818351?v=4",
+      "profile": "https://github.com/bulhiCzar",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
