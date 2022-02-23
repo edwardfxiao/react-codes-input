@@ -39,16 +39,16 @@ Tested on IE9+ and Chrome and Safari(10.0.3)
 |Props                        |       |Type         |Description                                    |Default          |
 |---                          |---    |---          |---                                            |  ---            |
 |initialFocus                 |  Opt  |  Bool       |Options are ['false', 'true']                  |  false          |
-|wrapperRef                   |  Req  |  React Ref  |                                               |  none           |
-|codeLength                   |  Req  |  Number     |                                               |  6              |
-|id                           |  Req  |  Str        |                                               |  random ID      |
-|onChange                     |  Req  |  Func       |                                               |  none           |
+|wrapperRef                   |  Opt  |  React Ref  |                                               |  none           |
+|codeLength                   |  Opt  |  Number     |                                               |  6              |
+|id                           |  Opt  |  Str        |                                               |  random ID      |
+|onChange                     |  Opt  |  Func       |(value: string) => void                        |  none           |
 |type                         |  Opt  |  Default    |Options are ['alphanumeric', 'alpha', 'number']|  "alphanumeric" |
 |letterCase                   |  Opt  |  Str        |Options are ['upper', 'lower']                 |  "upper"        |
-|value                        |  Req  |  Str        |                                               |  ""             |
+|value                        |  Opt  |  Str        |                                               |  ""             |
 |disabled                     |  Opt  |  Bool       |Options are [false, true]                      |  false          |
 |hide                         |  Opt  |  Bool       |Options are [false, true]                      |  false          |
-|placeholder                  |  Opt  |  Str        |                                               |  ""          |
+|placeholder                  |  Opt  |  Str        |                                               |  ""             |
 |focusColor                   |  Opt  |  Str        |                                               |  "#007bff"      |
 |classNameComponent           |  Opt  |  Str        |                                               |  ""             |
 |classNameWrapper             |  Opt  |  Str        |                                               |  ""             |
@@ -73,13 +73,13 @@ import 'react-codes-input/lib/react-codes-input.min.css';
 
 <ReactCodesInput
   initialFocus="" // Opt. Bool. Default false. Options are ['false', 'true'].
-  wrapperRef="" // Req. React Ref. Default none.
-  codeLength="" // Req. Number. Default 6.
-  id="" // Req. Str. Default random ID.
-  onChange="" // Req. Func. Default none.
+  wrapperRef="" // Opt. React Ref. Default none.
+  codeLength="" // Opt. Number. Default 6.
+  id="" // Opt. Str. Default random ID.
+  onChange="" // Opt. Func. Default none.
   type="" // Opt. Str. Default "alphanumeric". Options are ['alphanumeric', 'alpha', 'number'].
   letterCase="upper" // Opt. Str. Default "upper". Options are ['upper', 'lower'].
-  value="" // Req. Str. Default "".
+  value="" // Opt. Str. Default "".
   disabled={false} // Opt. Bool. Default false. Options are [false, true].
   hide={false} // Opt. Bool. Default false. Options are [false, true].
   placeholder="" // Opt. Str. Default "".

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_TYPES } from './utils';
+import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_TYPES, getClassName } from './utils';
 import CSS from './react-codes-input.css';
 if (!('classList' in document.documentElement)) {
   Object.defineProperty(HTMLElement.prototype, 'classList', {
@@ -39,20 +39,24 @@ if (!('classList' in document.documentElement)) {
 }
 const DEFAULT_ID = getRandomId();
 const DEFAULT_CODE_LENGTH = 6;
-const DEFAULT_TYPES = ['alphanumeric', 'alpha', 'number'];
+export enum DEFAULT_TYPES {
+  ALPHANUMERTIC = 'alphanumeric',
+  ALPHA = 'alpha',
+  NUMBER = 'number',
+}
 interface AttibutesObj {
   type?: string;
   pattern?: string;
 }
-interface Props {
+export interface ReactCodesInputProps {
+  wrapperRef?: React.RefObject<HTMLInputElement>,
+  value?: string,
+  onChange?: (value: string) => void,
   initialFocus?: boolean,
-  wrapperRef: React.RefObject<HTMLInputElement>,
-  codeLength: number,
-  id: string,
-  onChange: (res: string) => void,
-  type?: string,
-  letterCase?: string,
-  value: string,
+  codeLength?: number,
+  id?: string,
+  type?: 'number' | 'alpha' | 'alphanumeric',
+  letterCase?: 'upper' | 'lower',
   disabled?: boolean;
   hide?: boolean;
   focusColor?: string,
@@ -71,14 +75,14 @@ interface Props {
   placeholder?: string,
   customStylePlaceholder?: React.CSSProperties,
 }
-const Index: React.FC<Props> = ({
+const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   initialFocus = false,
   wrapperRef,
   codeLength = DEFAULT_CODE_LENGTH,
   id = DEFAULT_ID,
   onChange,
-  type = DEFAULT_TYPES[0],
-  letterCase = CASE_TYPES[0],
+  type = DEFAULT_TYPES.ALPHANUMERTIC,
+  letterCase = CASE_TYPES.UPPERCASE,
   value = '',
   disabled = false,
   hide = false,
@@ -99,7 +103,7 @@ const Index: React.FC<Props> = ({
   customStylePlaceholder = {},
 }) => {
   const DEFAULT_CODES = useMemo(() => [...Array(codeLength).keys()], []);
-  const [code, setCode] = useState(value);
+  const [code, setCode] = useState<string>(value);
   const [isFocus, setIsFocus] = useState(false);
   const $component = useRef(null);
   const pageClick = useCallback(e => {
@@ -134,7 +138,7 @@ const Index: React.FC<Props> = ({
         e.preventDefault();
         return;
       }
-      if (type === DEFAULT_TYPES[2] && keyCode === keyCodeE) {
+      if (type === DEFAULT_TYPES.NUMBER && keyCode === keyCodeE) {
         e.preventDefault();
         return;
       }
@@ -159,27 +163,29 @@ const Index: React.FC<Props> = ({
     const res = (document.getElementById(id) as HTMLInputElement).value;
     let v = '';
     switch (type) {
-      case DEFAULT_TYPES[0]:
+      case DEFAULT_TYPES.ALPHANUMERTIC:
         v = getAlphanumeric(res);
         break;
-      case DEFAULT_TYPES[1]:
+      case DEFAULT_TYPES.ALPHA:
         v = getAlpha(res);
         break;
-      case DEFAULT_TYPES[2]:
+      case DEFAULT_TYPES.NUMBER:
         v = getNumeric(res);
         break;
       default:
         v = getAlphanumeric(res);
         break;
     }
-    if (type === DEFAULT_TYPES[2]) {
+    if (type === DEFAULT_TYPES.NUMBER) {
       if (v.length > DEFAULT_CODES.length) {
         return;
       }
     }
     v = getCased(v, letterCase);
     setCode(v);
-    onChange && onChange(v);
+    if (typeof onChange === 'function') {
+      onChange(v)
+    }
   }, [type, letterCase, DEFAULT_CODES]);
   const handleOnCodeFocus = useCallback(() => {
     setIsFocus(true);
@@ -189,15 +195,33 @@ const Index: React.FC<Props> = ({
   }, []);
   const attributes = useMemo(() => {
     const res: AttibutesObj = {};
-    if (type === DEFAULT_TYPES[2]) {
+    if (type === DEFAULT_TYPES.NUMBER) {
       res['type'] = 'number';
       res['pattern'] = '[0-9]*';
     }
     return res;
   }, [type]);
   return (
-    <div ref={$component} className={cx(CSS['component'], disabled && CSS['disabled'], classNameComponent)} style={customStyleComponent}>
-      <div ref={wrapperRef} className={cx(CSS['wrapper'], classNameWrapper)} style={customStyleWrapper}>
+    <div
+        ref={$component}
+        className={cx(
+            CSS['component'],
+            getClassName('component'),
+            disabled && CSS['disabled'],
+            disabled && getClassName('disabled'),
+            classNameComponent,
+        )}
+        style={customStyleComponent}
+    >
+      <div
+          ref={wrapperRef}
+          className={cx(
+              CSS['wrapper'],
+              getClassName('wrapper'),
+              classNameWrapper,
+          )}
+          style={customStyleWrapper}
+      >
         {DEFAULT_CODES.map((i, k) => {
           const isLastItem = k === DEFAULT_CODES.length - 1 ? true : false;
           const isEntered = typeof code[k] === 'undefined' ? false : true;
@@ -240,14 +264,34 @@ const Index: React.FC<Props> = ({
                 }
                 document.getElementById(id).focus();
               }}
-              className={cx(CSS['code-wrapper'], classNameCodeWrapper, isActive && CSS['active'], isEntered && CSS['entered'])}
+              className={cx(
+                  CSS['code-wrapper'],
+                  getClassName('code-wrapper'),
+                  classNameCodeWrapper,
+                  isActive && CSS['active'],
+                  isActive && getClassName('active'),
+                  isEntered && CSS['entered'],
+                  isEntered && getClassName('entered'),
+              )}
               style={customStyleCodeWrapper}
             >
-              <div className={cx(CSS['entered-value'], classNameEnteredValue, hide && isEntered && CSS['hide'])} style={customStyleEnteredValue}>
+              <div
+                  className={cx(
+                      CSS['entered-value'],
+                      getClassName('entered-value'),
+                      classNameEnteredValue,
+                      hide && isEntered && CSS['hide'],
+                      hide && isEntered && getClassName('hide'),
+                  )}
+                  style={customStyleEnteredValue}
+              >
                 {typeof code[k] === 'undefined' && <span style={{ color: '#ddd', ...customStylePlaceholder }}>{placeholder.split('')[k]}</span>} {hide ? '' : code[k]}
               </div>
-              <div className={cx(CSS['code'], classNameCode)} style={customStyleCode}>
-                <div className={cx(CSS['code-wrapper--focus'], classNameCodeWrapperFocus)} style={{ ...focusStyle, ...customStyleCodeWrapperFocus }} />
+              <div className={cx(CSS['code'], getClassName('code'), classNameCode)} style={customStyleCode}>
+                <div
+                    className={cx(CSS['code-wrapper--focus'], getClassName('code-wrapper--focus'), classNameCodeWrapperFocus)}
+                    style={{ ...focusStyle, ...customStyleCodeWrapperFocus }}
+                />
               </div>
             </div>
           );
@@ -274,4 +318,4 @@ const Index: React.FC<Props> = ({
   );
 };
 
-export default Index;
+export default ReactCodesInput;
