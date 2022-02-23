@@ -188,11 +188,9 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
     [type, letterCase, DEFAULT_CODES, code],
   );
   const handleOnCodeFocus = useCallback(() => {
-    console.log('focus');
     setIsFocus(true);
   }, []);
   const handleOnCodeBlur = useCallback(() => {
-    console.log('blur');
     setIsFocus(false);
   }, []);
   const attributes = useMemo(() => {
@@ -296,7 +294,6 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
         }}
         {...attributes}
       />
-      {code}
     </div>
   );
 };
