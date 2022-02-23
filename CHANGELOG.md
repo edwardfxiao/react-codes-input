@@ -1,3 +1,7 @@
+# 2.0.8
+
+- https://github.com/edwardfxiao/react-codes-input/issues/7
+
 # 2.0.7
 
 - Better TypeScript support (https://github.com/edwardfxiao/react-codes-input/pull/5)
