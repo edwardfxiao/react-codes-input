@@ -1,3 +1,13 @@
+# 2.1.1
+
+- Change ```input``` ```type``` to ```text``` from ```password```
+- Change ```input``` ```margin-left``` to ```-9999999px```
+
+# 2.1.0
+
+- #6
+- Uses ```require``` attribute of html input element, which not support IE9
+
 # 2.0.8
 
 - https://github.com/edwardfxiao/react-codes-input/issues/7

@@ -143,11 +143,11 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
         res['pattern'] = `[0-9]{${DEFAULT_CODES.length},}`;
         break;
       case DEFAULT_TYPES.ALPHA:
-        res['type'] = 'password';
+        res['type'] = 'text';
         res['pattern'] = `[A-Za-z]{${DEFAULT_CODES.length},}`;
         break;
       case DEFAULT_TYPES.ALPHANUMERTIC:
-        res['type'] = 'password';
+        res['type'] = 'text';
         res['pattern'] = `[0-9A-Za-z]{${DEFAULT_CODES.length},}`;
         break;
     }
@@ -260,7 +260,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
         style={{
           position: 'absolute',
           opacity: '0',
-          marginLeft: '-999px',
+          marginLeft: '-9999999px',
         }}
         {...attributes}
       />

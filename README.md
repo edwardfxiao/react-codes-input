@@ -32,7 +32,9 @@ npm install react-codes-input --save
 <a href="https://www.paypal.me/XIAOMENGXIAO/0.99" target="_blank" alt="PayPal Donate">Thanks for donating me a donut!&nbsp;&nbsp;⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄</a>
 
 # Browser support
-Tested on IE9+ and Chrome and Safari(10.0.3)
+Tested on ~~IE9+~~ IE10+ and Chrome and Safari(10.0.3)
+
+This library uses ```require``` attribute of html input element, which not support IE9 from v2.1.0
 
 # Docs
 
