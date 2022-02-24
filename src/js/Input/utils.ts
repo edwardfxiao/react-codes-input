@@ -1,7 +1,7 @@
 export enum CASE_TYPES {
   UPPERCASE = 'upper',
   LOWERCASE = 'lower',
-};
+}
 
 export const cx = (...params: Array<any>) => {
   const classes = [];
@@ -67,6 +67,7 @@ export const getNumeric = (v: string) => {
   });
   return res;
 };
+
 export const getCased = (v: string, type: string) => {
   if (type) {
     switch (type) {
@@ -79,4 +80,5 @@ export const getCased = (v: string, type: string) => {
     return v.toUpperCase();
   }
 };
-export const getClassName = (className: string) => `RCI-${className}`
+
+export const getClassName = (className: string) => `RCI-${className}`;

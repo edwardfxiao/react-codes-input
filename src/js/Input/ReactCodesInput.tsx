@@ -1,44 +1,12 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_TYPES, getClassName } from './utils';
 import CSS from './react-codes-input.css';
-if (!('classList' in document.documentElement)) {
-  Object.defineProperty(HTMLElement.prototype, 'classList', {
-    get: function () {
-      var self = this;
-      function update(fn: Function) {
-        return function (value: string) {
-          var classes = self.className.split(/\s+/g);
-          var index = classes.indexOf(value);
-          fn(classes, index, value);
-          self.className = classes.join(' ');
-        };
-      }
-      return {
-        add: update(function (classes: Array<string>, index: number, value: string) {
-          if (!~index) classes.push(value);
-        }),
-        remove: update(function (classes: Array<string>, index: number) {
-          if (~index) classes.splice(index, 1);
-        }),
-        toggle: update(function (classes: Array<string>, index: number, value: string) {
-          if (~index) {
-            classes.splice(index, 1);
-          } else {
-            classes.push(value);
-          }
-        }),
-        contains: function (value: string) {
-          return !!~self.className.split(/\s+/g).indexOf(value);
-        },
-        item: function (i: number) {
-          return self.className.split(/\s+/g)[i] || null;
-        },
-      };
-    },
-  });
-}
-const DEFAULT_ID = getRandomId();
 const DEFAULT_CODE_LENGTH = 6;
+const ALPHABETS = 'abcdefghijklmnopqrstuvwxyz';
+const NUMBERS = '0123456789';
+const ALPHABETNUMERICS = ALPHABETS + NUMBERS;
+const ENTER = 'enter';
+const BACKSPACE = 'backspace';
 export enum DEFAULT_TYPES {
   ALPHANUMERTIC = 'alphanumeric',
   ALPHA = 'alpha',
@@ -47,6 +15,7 @@ export enum DEFAULT_TYPES {
 interface AttibutesObj {
   type?: string;
   pattern?: string;
+  minLength?: number;
 }
 export interface ReactCodesInputProps {
   wrapperRef?: React.RefObject<HTMLInputElement>;
@@ -79,7 +48,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   initialFocus = false,
   wrapperRef,
   codeLength = DEFAULT_CODE_LENGTH,
-  id = DEFAULT_ID,
+  id = getRandomId(),
   onChange,
   type = DEFAULT_TYPES.ALPHANUMERTIC,
   letterCase = CASE_TYPES.UPPERCASE,
@@ -106,33 +75,17 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   const [code, setCode] = useState<string>(value);
   const [pressKey, setPressKey] = useState({ key: undefined });
   const [isFocus, setIsFocus] = useState(false);
+  const $wrapperRef = useRef(null);
   const $component = useRef(null);
-  const pageClick = useCallback(e => {
-    if ($component.current.contains(e.target)) {
-      return;
-    }
-    for (let index = 0; index < DEFAULT_CODES.length; index += 1) {
-      document.getElementById(`${id}${index}`).classList.remove(CSS['active']);
-    }
-  }, []);
   useEffect(() => {
     if (initialFocus) {
       document.getElementById(`${id}${0}`).click();
     }
-    window.addEventListener('mousedown', pageClick);
-    window.addEventListener('touchstart', pageClick);
-    return () => {
-      window.removeEventListener('mousedown', pageClick);
-      window.removeEventListener('touchstart', pageClick);
-    };
   }, []);
   const onKeyDown = useCallback(
     (key: string) => {
-      const FILTERS = ['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'];
-      if (FILTERS.indexOf(key) >= 0) {
-        return;
-      }
-      if (type === DEFAULT_TYPES.NUMBER && key.toLowerCase() === 'e') {
+      const filter = [...ALPHABETNUMERICS.split(''), BACKSPACE];
+      if (filter.indexOf(key) < 0) {
         return;
       }
       handleOnCodeChange(key);
@@ -144,20 +97,9 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
       onKeyDown(pressKey.key);
     }
   }, [pressKey]);
-  // useEffect(() => {
-  //   $component.current.addEventListener('keydown', keypressHandler, false);
-  //   $component.current.addEventListener('keypress', keypressHandler, false);
-  //   return () => {
-  //     $component.current.removeEventListener('keydown', keypressHandler);
-  //     $component.current.removeEventListener('keypress', keypressHandler);
-  //   };
-  // }, [type]);
   useEffect(() => {
     setCode(getCased(value, letterCase));
   }, [value, letterCase]);
-  useEffect(() => {
-    document.getElementById(id).removeAttribute('value');
-  });
   const handleOnCodeChange = useCallback(
     res => {
       let v = '';
@@ -176,7 +118,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
           break;
       }
       v = getCased(v, letterCase);
-      const newCode = res === 'Backspace' ? code.substring(0, code.length - 1) : `${code}${v}`;
+      const newCode = res === BACKSPACE ? code.substring(0, code.length - 1) : `${code}${v}`;
       if (newCode.length > DEFAULT_CODES.length) {
         return;
       }
@@ -195,9 +137,19 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   }, []);
   const attributes = useMemo(() => {
     const res: AttibutesObj = {};
-    if (type === DEFAULT_TYPES.NUMBER) {
-      res['type'] = 'number';
-      res['pattern'] = '[0-9]*';
+    switch (type) {
+      case DEFAULT_TYPES.NUMBER:
+        res['type'] = 'tel';
+        res['pattern'] = `[0-9]{${DEFAULT_CODES.length},}`;
+        break;
+      case DEFAULT_TYPES.ALPHA:
+        res['type'] = 'password';
+        res['pattern'] = `[A-Za-z]{${DEFAULT_CODES.length},}`;
+        break;
+      case DEFAULT_TYPES.ALPHANUMERTIC:
+        res['type'] = 'password';
+        res['pattern'] = `[0-9A-Za-z]{${DEFAULT_CODES.length},}`;
+        break;
     }
     return res;
   }, [type]);
@@ -207,7 +159,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
       className={cx(CSS['component'], getClassName('component'), disabled && CSS['disabled'], disabled && getClassName('disabled'), classNameComponent)}
       style={customStyleComponent}
     >
-      <div ref={wrapperRef} className={cx(CSS['wrapper'], getClassName('wrapper'), classNameWrapper)} style={customStyleWrapper}>
+      <div ref={wrapperRef || $wrapperRef} className={cx(CSS['wrapper'], getClassName('wrapper'), classNameWrapper)} style={customStyleWrapper}>
         {DEFAULT_CODES.map((i, k) => {
           const isLastItem = k === DEFAULT_CODES.length - 1 ? true : false;
           const isEntered = typeof code[k] === 'undefined' ? false : true;
@@ -232,9 +184,6 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
               key={k}
               id={`${id}${k}`}
               onClick={() => {
-                for (let index = 0; index < DEFAULT_CODES.length; index += 1) {
-                  document.getElementById(`${id}${index}`).classList.remove(CSS['active']);
-                }
                 let focusedIndex = -1;
                 for (let index = 0; index < DEFAULT_CODES.length; index += 1) {
                   if (typeof code[index] === 'undefined') {
@@ -242,11 +191,6 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
                     focusedIndex = index;
                     break;
                   }
-                }
-                if (document.getElementById(`${id}${focusedIndex}`)) {
-                  document.getElementById(`${id}${focusedIndex}`).classList.add(CSS['active']);
-                } else {
-                  document.getElementById(`${id}${DEFAULT_CODES.length - 1}`).classList.add(CSS['active']);
                 }
                 document.getElementById(id).focus();
               }}
@@ -277,15 +221,41 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
       <input
         id={id}
         autoComplete="off"
-        type="password"
-        value={code}
         disabled={disabled}
         maxLength={DEFAULT_CODES.length}
-        onChange={() => {}}
+        required
         onFocus={handleOnCodeFocus}
         onBlur={handleOnCodeBlur}
         onKeyDown={e => {
-          setPressKey({ key: e.key });
+          const key = e.key.toLowerCase();
+          if (key === BACKSPACE) {
+            if (code === '') {
+              e.preventDefault();
+              return;
+            }
+          }
+          if (type === DEFAULT_TYPES.NUMBER) {
+            const allowedKeys = [...NUMBERS.split(''), ENTER, BACKSPACE];
+            if (allowedKeys.indexOf(key) < 0) {
+              e.preventDefault();
+              return;
+            }
+          }
+          if (type === DEFAULT_TYPES.ALPHA) {
+            const allowedKeys = [...ALPHABETS.split(''), ENTER, BACKSPACE];
+            if (allowedKeys.indexOf(key) < 0) {
+              e.preventDefault();
+              return;
+            }
+          }
+          if (type === DEFAULT_TYPES.ALPHANUMERTIC) {
+            const allowedKeys = [...ALPHABETNUMERICS.split(''), ENTER, BACKSPACE];
+            if (allowedKeys.indexOf(key) < 0) {
+              e.preventDefault();
+              return;
+            }
+          }
+          setPressKey({ key: key });
         }}
         style={{
           position: 'absolute',
