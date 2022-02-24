@@ -1,3 +1,7 @@
+# 2.1.2
+
+- Change ```input``` ```type``` to ```password``` from ```text``` (and ```tel``` if is on mobile device), due to input source switching issue
+
 # 2.1.1
 
 - Change ```input``` ```type``` to ```text``` from ```password```
