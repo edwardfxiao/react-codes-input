@@ -1,3 +1,8 @@
+# 2.1.0
+
+- #6
+- Uses ```require``` attribute of html input element, which not support IE9
+
 # 2.0.8
 
 - https://github.com/edwardfxiao/react-codes-input/issues/7
