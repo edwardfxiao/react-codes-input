@@ -1,6 +1,6 @@
 # react-codes-input
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![npm version](https://badge.fury.io/js/react-codes-input.svg)](https://badge.fury.io/js/react-codes-input) ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/react-codes-input.svg) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/edwardfxiao/react-codes-input/master/LICENSE)[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 
@@ -39,16 +39,16 @@ Tested on IE9+ and Chrome and Safari(10.0.3)
 |Props                        |       |Type         |Description                                    |Default          |
 |---                          |---    |---          |---                                            |  ---            |
 |initialFocus                 |  Opt  |  Bool       |Options are ['false', 'true']                  |  false          |
-|wrapperRef                   |  Req  |  React Ref  |                                               |  none           |
-|codeLength                   |  Req  |  Number     |                                               |  6              |
-|id                           |  Req  |  Str        |                                               |  random ID      |
-|onChange                     |  Req  |  Func       |                                               |  none           |
+|wrapperRef                   |  Opt  |  React Ref  |                                               |  none           |
+|codeLength                   |  Opt  |  Number     |                                               |  6              |
+|id                           |  Opt  |  Str        |                                               |  random ID      |
+|onChange                     |  Opt  |  Func       |(value: string) => void                        |  none           |
 |type                         |  Opt  |  Default    |Options are ['alphanumeric', 'alpha', 'number']|  "alphanumeric" |
 |letterCase                   |  Opt  |  Str        |Options are ['upper', 'lower']                 |  "upper"        |
-|value                        |  Req  |  Str        |                                               |  ""             |
+|value                        |  Opt  |  Str        |                                               |  ""             |
 |disabled                     |  Opt  |  Bool       |Options are [false, true]                      |  false          |
 |hide                         |  Opt  |  Bool       |Options are [false, true]                      |  false          |
-|placeholder                  |  Opt  |  Str        |                                               |  ""          |
+|placeholder                  |  Opt  |  Str        |                                               |  ""             |
 |focusColor                   |  Opt  |  Str        |                                               |  "#007bff"      |
 |classNameComponent           |  Opt  |  Str        |                                               |  ""             |
 |classNameWrapper             |  Opt  |  Str        |                                               |  ""             |
@@ -73,13 +73,13 @@ import 'react-codes-input/lib/react-codes-input.min.css';
 
 <ReactCodesInput
   initialFocus="" // Opt. Bool. Default false. Options are ['false', 'true'].
-  wrapperRef="" // Req. React Ref. Default none.
-  codeLength="" // Req. Number. Default 6.
-  id="" // Req. Str. Default random ID.
-  onChange="" // Req. Func. Default none.
+  wrapperRef="" // Opt. React Ref. Default none.
+  codeLength="" // Opt. Number. Default 6.
+  id="" // Opt. Str. Default random ID.
+  onChange="" // Opt. Func. Default none.
   type="" // Opt. Str. Default "alphanumeric". Options are ['alphanumeric', 'alpha', 'number'].
   letterCase="upper" // Opt. Str. Default "upper". Options are ['upper', 'lower'].
-  value="" // Req. Str. Default "".
+  value="" // Opt. Str. Default "".
   disabled={false} // Opt. Bool. Default false. Options are [false, true].
   hide={false} // Opt. Bool. Default false. Options are [false, true].
   placeholder="" // Opt. Str. Default "".
@@ -110,7 +110,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/edwardfxiao"><img src="https://avatars.githubusercontent.com/u/11728228?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Edward Xiao</b></sub></a><br /><a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Code">💻</a> <a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Documentation">📖</a> <a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Tests">⚠️</a> <a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/edwardfxiao"><img src="https://avatars.githubusercontent.com/u/11728228?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Edward Xiao</b></sub></a><br /><a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Code">💻</a> <a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Documentation">📖</a> <a href="#infra-edwardfxiao" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Tests">⚠️</a> <a href="https://github.com/edwardfxiao/react-codes-input/pulls?q=is%3Apr+reviewed-by%3Aedwardfxiao" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/bulhiCzar"><img src="https://avatars.githubusercontent.com/u/70818351?v=4?s=100" width="100px;" alt=""/><br /><sub><b>bulhiCzar</b></sub></a><br /><a href="https://github.com/edwardfxiao/react-codes-input/commits?author=bulhiCzar" title="Code">💻</a> <a href="https://github.com/edwardfxiao/react-codes-input/commits?author=bulhiCzar" title="Documentation">📖</a></td>
   </tr>
 </table>
 
