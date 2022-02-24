@@ -1,3 +1,8 @@
+# 2.1.1
+
+- Change ```input``` ```type``` to ```text``` from ```password```
+- Change ```input``` ```margin-left``` to ```-9999999px```
+
 # 2.1.0
 
 - #6
