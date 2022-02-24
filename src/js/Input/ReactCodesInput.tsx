@@ -139,15 +139,16 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
     const res: AttibutesObj = {};
     switch (type) {
       case DEFAULT_TYPES.NUMBER:
-        res['type'] = 'tel';
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        res['type'] = isMobile ? 'tel' : 'password';
         res['pattern'] = `[0-9]{${DEFAULT_CODES.length},}`;
         break;
       case DEFAULT_TYPES.ALPHA:
-        res['type'] = 'text';
+        res['type'] = 'password';
         res['pattern'] = `[A-Za-z]{${DEFAULT_CODES.length},}`;
         break;
       case DEFAULT_TYPES.ALPHANUMERTIC:
-        res['type'] = 'text';
+        res['type'] = 'password';
         res['pattern'] = `[0-9A-Za-z]{${DEFAULT_CODES.length},}`;
         break;
     }
