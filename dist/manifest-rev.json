@@ -1,11 +1,12 @@
 {
   "../index.html": "../index.html",
-  "../lib/ReactCodesInput.d.ts": "../lib/ReactCodesInput.d.ts",
-  "../lib/index.d.ts": "../lib/index.d.ts",
-  "../lib/index.global.d.ts": "../lib/index.global.d.ts",
-  "../lib/utils.d.ts": "../lib/utils.d.ts",
-  "b-3489a3685f24d62090e6.js.LICENSE.txt": "b-3489a3685f24d62090e6.js.LICENSE.txt",
-  "b.js": "b-3489a3685f24d62090e6.js",
-  "index.css": "css/index-989e745683286756bfe9.css",
-  "index.js": "index-044585fe89751e988ed9.js"
+  "../lib/example/index.d.ts": "../lib/example/index.d.ts",
+  "../lib/src/js/Input/ReactCodesInput.d.ts": "../lib/src/js/Input/ReactCodesInput.d.ts",
+  "../lib/src/js/Input/index.d.ts": "../lib/src/js/Input/index.d.ts",
+  "../lib/src/js/Input/index.global.d.ts": "../lib/src/js/Input/index.global.d.ts",
+  "../lib/src/js/Input/utils.d.ts": "../lib/src/js/Input/utils.d.ts",
+  "b-a9525268918a02aed677.js.LICENSE.txt": "b-a9525268918a02aed677.js.LICENSE.txt",
+  "b.js": "b-a9525268918a02aed677.js",
+  "index.css": "css/index-2d0d7ee629f8d3af1d35.css",
+  "index.js": "index-bd091a9ea748a84c0808.js"
 }
