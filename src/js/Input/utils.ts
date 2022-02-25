@@ -83,12 +83,4 @@ export const getCased = (v: string, type: string) => {
   }
 };
 
-export const usePrevious = (value: any) => {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-};
-
 export const getClassName = (className: string) => `RCI-${className}`;

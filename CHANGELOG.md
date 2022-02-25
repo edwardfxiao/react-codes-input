@@ -1,5 +1,6 @@
 # 2.1.3
 - Enable ```ArrowLeft``` ```ArrowRight``` ```ArrowUp``` ```ArrowDown``` for switching the cell, and ```Delete``` #11 (Not available in moblie)
+- Stable input ID
 
 # 2.1.2
 

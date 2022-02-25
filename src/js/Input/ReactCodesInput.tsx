@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_TYPES, getClassName, usePrevious } from './utils';
+import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_TYPES, getClassName } from './utils';
 import CSS from './react-codes-input.css';
 const DEFAULT_CODE_LENGTH = 6;
 const ALPHABETS = 'abcdefghijklmnopqrstuvwxyz'.split('');
@@ -138,7 +138,6 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   const $component = useRef(null);
   const $inputRef = useRef(null);
   const [curItemIndex, setCurItemIndex] = useState(0);
-  const prevCurItemIndex = usePrevious(curItemIndex);
   const inputId = useMemo(() => id || getRandomId(), [id]);
   useEffect(() => {
     if (initialFocus) {
@@ -181,7 +180,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
       return;
     }
     $inputRef.current.setSelectionRange(curItemIndex, curItemIndex);
-  }, [curItemIndex]);
+  }, [curItemIndex, DEFAULT_CODES]);
   useEffect(() => {
     setCode(getCased(value, letterCase));
   }, [value, letterCase]);
