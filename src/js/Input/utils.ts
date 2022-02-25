@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 export enum CASE_TYPES {
   UPPERCASE = 'upper',
   LOWERCASE = 'lower',
@@ -79,6 +81,14 @@ export const getCased = (v: string, type: string) => {
   } else {
     return v.toUpperCase();
   }
+};
+
+export const usePrevious = (value: any) => {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
 };
 
 export const getClassName = (className: string) => `RCI-${className}`;

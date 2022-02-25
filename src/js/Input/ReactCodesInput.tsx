@@ -1,12 +1,71 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_TYPES, getClassName } from './utils';
+import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_TYPES, getClassName, usePrevious } from './utils';
 import CSS from './react-codes-input.css';
 const DEFAULT_CODE_LENGTH = 6;
-const ALPHABETS = 'abcdefghijklmnopqrstuvwxyz';
-const NUMBERS = '0123456789';
-const ALPHABETNUMERICS = ALPHABETS + NUMBERS;
+const ALPHABETS = 'abcdefghijklmnopqrstuvwxyz'.split('');
+const NUMBERS = '0123456789'.split('');
+const ALPHABETNUMERICS = [...ALPHABETS, ...NUMBERS];
+const TAB = 'tab';
 const ENTER = 'enter';
 const BACKSPACE = 'backspace';
+const DELETE = 'delete';
+const ARROW_LEFT = 'arrowleft';
+const ARROW_RIGHT = 'arrowright';
+const ARROW_UP = 'arrowup';
+const ARROW_DOWN = 'arrowdown';
+const OPERRATION_KEYS = [ENTER, BACKSPACE, DELETE, ARROW_LEFT, ARROW_RIGHT, ARROW_UP, ARROW_DOWN];
+const ALLOWED_KEYS = [...ALPHABETNUMERICS, ...OPERRATION_KEYS];
+const INVALID_KEY = '';
+const HIDDEN_INPUT_TYPE = 'password';
+const IS_MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+const isValidKey = (key: string, type: string, code: string) => {
+  if (!ALLOWED_KEYS.includes(key)) {
+    return INVALID_KEY;
+  }
+  if (OPERRATION_KEYS.includes(key)) {
+    switch (key) {
+      case BACKSPACE: {
+        if (code === '') {
+          return INVALID_KEY;
+        } else {
+          return BACKSPACE;
+        }
+      }
+      case DELETE: {
+        if (code === '') {
+          return INVALID_KEY;
+        } else {
+          return DELETE;
+        }
+      }
+      case ARROW_UP: {
+        return ARROW_LEFT;
+      }
+      case ARROW_DOWN: {
+        return ARROW_RIGHT;
+      }
+      default: {
+        return key;
+      }
+    }
+  }
+  if (type === DEFAULT_TYPES.NUMBER) {
+    if (NUMBERS.indexOf(key) < 0) {
+      return INVALID_KEY;
+    }
+  }
+  if (type === DEFAULT_TYPES.ALPHA) {
+    if (ALPHABETS.indexOf(key) < 0) {
+      return INVALID_KEY;
+    }
+  }
+  if (type === DEFAULT_TYPES.ALPHANUMERTIC) {
+    if (ALPHABETNUMERICS.indexOf(key) < 0) {
+      return INVALID_KEY;
+    }
+  }
+  return key;
+};
 export enum DEFAULT_TYPES {
   ALPHANUMERTIC = 'alphanumeric',
   ALPHA = 'alpha',
@@ -48,7 +107,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   initialFocus = false,
   wrapperRef,
   codeLength = DEFAULT_CODE_LENGTH,
-  id = getRandomId(),
+  id = null,
   onChange,
   type = DEFAULT_TYPES.ALPHANUMERTIC,
   letterCase = CASE_TYPES.UPPERCASE,
@@ -71,26 +130,45 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   placeholder = '',
   customStylePlaceholder = {},
 }) => {
-  const DEFAULT_CODES = useMemo(() => [...Array(codeLength).keys()], []);
+  const DEFAULT_CODES = useMemo(() => [...Array(codeLength).keys()], [codeLength]);
   const [code, setCode] = useState<string>(value);
   const [pressKey, setPressKey] = useState({ key: undefined });
   const [isFocus, setIsFocus] = useState(false);
   const $wrapperRef = useRef(null);
   const $component = useRef(null);
+  const $inputRef = useRef(null);
+  const [curItemIndex, setCurItemIndex] = useState(0);
+  const prevCurItemIndex = usePrevious(curItemIndex);
+  const inputId = useMemo(() => id || getRandomId(), [id]);
   useEffect(() => {
     if (initialFocus) {
-      document.getElementById(`${id}${0}`).click();
+      document.getElementById(`${inputId}${0}`).click();
     }
   }, []);
   const onKeyDown = useCallback(
     (key: string) => {
-      const filter = [...ALPHABETNUMERICS.split(''), BACKSPACE];
-      if (filter.indexOf(key) < 0) {
-        return;
+      if (!IS_MOBILE) {
+        if (key === ARROW_LEFT) {
+          const left = curItemIndex - 1;
+          setCurItemIndex(left < 0 ? 0 : left);
+          return;
+        }
+        if (key === ARROW_RIGHT) {
+          if (code === '') {
+            return;
+          }
+          const right = Math.min(curItemIndex + 1, DEFAULT_CODES.length - 1);
+          if (typeof code[right] === 'undefined') {
+            setCurItemIndex(code.length);
+            return;
+          }
+          setCurItemIndex(right);
+          return;
+        }
       }
       handleOnCodeChange(key);
     },
-    [type, code],
+    [type, code, curItemIndex],
   );
   useEffect(() => {
     if (pressKey.key) {
@@ -98,37 +176,130 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
     }
   }, [pressKey]);
   useEffect(() => {
+    if (curItemIndex >= DEFAULT_CODES.length) {
+      setCurItemIndex(DEFAULT_CODES.length - 1);
+      return;
+    }
+    $inputRef.current.setSelectionRange(curItemIndex, curItemIndex);
+  }, [curItemIndex]);
+  useEffect(() => {
     setCode(getCased(value, letterCase));
   }, [value, letterCase]);
   const handleOnCodeChange = useCallback(
-    res => {
-      let v = '';
-      switch (type) {
-        case DEFAULT_TYPES.ALPHANUMERTIC:
-          v = getAlphanumeric(res);
-          break;
-        case DEFAULT_TYPES.ALPHA:
-          v = getAlpha(res);
-          break;
-        case DEFAULT_TYPES.NUMBER:
-          v = getNumeric(res);
-          break;
-        default:
-          v = getAlphanumeric(res);
-          break;
-      }
-      v = getCased(v, letterCase);
-      const newCode = res === BACKSPACE ? code.substring(0, code.length - 1) : `${code}${v}`;
-      if (newCode.length > DEFAULT_CODES.length) {
+    pressedKey => {
+      const codeSplits = code.split('');
+      if (pressedKey === BACKSPACE) {
+        // BACKSPACE case: set current code item empty and setCurItemIndex
+        let index = curItemIndex;
+        if (curItemIndex === DEFAULT_CODES.length - 1) {
+          if (code.length === DEFAULT_CODES.length) {
+            codeSplits[index] = '';
+            const newCode = codeSplits.join('');
+            handleSetCode(index, newCode, onChange);
+            return;
+          } else {
+            index -= 1;
+            codeSplits[index] = '';
+            const newCode = codeSplits.join('');
+            handleSetCode(index, newCode, onChange);
+            return;
+          }
+        }
+        if (curItemIndex === code.length) {
+          index -= 1;
+          codeSplits[index] = '';
+          const newCode = codeSplits.join('');
+          handleSetCode(index, newCode, onChange);
+          return;
+        }
+        codeSplits[index] = '';
+        const newCode = codeSplits.join('');
+        handleSetCode(Math.max(index - 1, 0), newCode, onChange);
         return;
       }
-      setCode(newCode);
-      if (typeof onChange === 'function') {
-        onChange(newCode);
+      if (pressedKey === DELETE) {
+        // BACKSPACE case: set current code item empty and setCurItemIndex
+        let index = curItemIndex;
+        if (typeof codeSplits[curItemIndex] === 'undefined') {
+          index += 1;
+        }
+        index = Math.min(index, code.length);
+        codeSplits[index] = '';
+        const newCode = codeSplits.join('');
+        handleSetCode(index, newCode, onChange);
+        return;
+      }
+      if (ALPHABETNUMERICS.includes(pressedKey)) {
+        let v = '';
+        switch (type) {
+          case DEFAULT_TYPES.ALPHANUMERTIC:
+            v = getAlphanumeric(pressedKey);
+            break;
+          case DEFAULT_TYPES.ALPHA:
+            v = getAlpha(pressedKey);
+            break;
+          case DEFAULT_TYPES.NUMBER:
+            v = getNumeric(pressedKey);
+            break;
+          default:
+            v = getAlphanumeric(pressedKey);
+            break;
+        }
+        v = getCased(v, letterCase);
+        if (code === '') {
+          // initial case: just setCode(v)
+          const newCode = v;
+          handleSetCode(newCode.length, newCode, onChange);
+          return;
+        }
+        if (curItemIndex === code.length) {
+          // typing case: appending. setCode with the value just typed and setCurItemIndex with newCode.length
+          if (codeSplits.length < DEFAULT_CODES.length) {
+            codeSplits.push(v);
+            const newCode = codeSplits.join('');
+            let index = newCode.length;
+            if (newCode.length >= DEFAULT_CODES.length) {
+              index -= 1;
+            }
+            handleSetCode(index, newCode, onChange);
+            return;
+          }
+        } else {
+          if (IS_MOBILE) {
+            // mobile devices don't have arrow key
+            // typing case: appending. setCode with the value just typed and setCurItemIndex with newCode.length
+            if (codeSplits.length < DEFAULT_CODES.length) {
+              codeSplits.push(v);
+              const newCode = codeSplits.join('');
+              let index = newCode.length;
+              if (newCode.length >= DEFAULT_CODES.length) {
+                index -= 1;
+              }
+              handleSetCode(index, newCode, onChange);
+              return;
+            }
+          } else {
+            // typing case: replacing. setCode with the value just typed and do not setCurItemIndex
+            codeSplits[curItemIndex] = v;
+            const newCode = codeSplits.join('');
+            handleSetCode(typeof codeSplits[curItemIndex + 1] === 'undefined' ? curItemIndex + 1 : null, newCode, onChange);
+            return;
+          }
+        }
       }
     },
-    [type, letterCase, DEFAULT_CODES, code],
+    [type, letterCase, DEFAULT_CODES, code, curItemIndex],
   );
+  const handleSetCode = useCallback((selectionIndex, code, onChange) => {
+    setCode(code);
+    if (selectionIndex !== null) {
+      setCurItemIndex(selectionIndex);
+    }
+    $inputRef.current.value = code;
+    if (typeof onChange === 'function') {
+      onChange(code);
+    }
+  }, []);
   const handleOnCodeFocus = useCallback(() => {
     setIsFocus(true);
   }, []);
@@ -139,16 +310,15 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
     const res: AttibutesObj = {};
     switch (type) {
       case DEFAULT_TYPES.NUMBER:
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        res['type'] = isMobile ? 'tel' : 'password';
+        res['type'] = IS_MOBILE ? 'tel' : HIDDEN_INPUT_TYPE;
         res['pattern'] = `[0-9]{${DEFAULT_CODES.length},}`;
         break;
       case DEFAULT_TYPES.ALPHA:
-        res['type'] = 'password';
+        res['type'] = HIDDEN_INPUT_TYPE;
         res['pattern'] = `[A-Za-z]{${DEFAULT_CODES.length},}`;
         break;
       case DEFAULT_TYPES.ALPHANUMERTIC:
-        res['type'] = 'password';
+        res['type'] = HIDDEN_INPUT_TYPE;
         res['pattern'] = `[0-9A-Za-z]{${DEFAULT_CODES.length},}`;
         break;
     }
@@ -167,14 +337,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
           let isActive = false;
           const focusStyle: React.CSSProperties = {};
           if (isFocus) {
-            if (code.length === k) {
-              isActive = true;
-            }
-            if (isLastItem) {
-              if (code.length - 1 === k) {
-                isActive = true;
-              }
-            }
+            isActive = curItemIndex === k;
           }
           if (isActive) {
             focusStyle['border'] = `1px solid ${focusColor}`;
@@ -183,17 +346,17 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
           return (
             <div
               key={k}
-              id={`${id}${k}`}
+              id={`${inputId}${k}`}
               onClick={() => {
                 let focusedIndex = -1;
                 for (let index = 0; index < DEFAULT_CODES.length; index += 1) {
                   if (typeof code[index] === 'undefined') {
-                    document.getElementById(`${id}${index}`).click();
+                    document.getElementById(`${inputId}${index}`).click();
                     focusedIndex = index;
                     break;
                   }
                 }
-                document.getElementById(id).focus();
+                document.getElementById(inputId).focus();
               }}
               className={cx(
                 CSS['code-wrapper'],
@@ -220,7 +383,8 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
         })}
       </div>
       <input
-        id={id}
+        ref={$inputRef}
+        id={inputId}
         autoComplete="off"
         disabled={disabled}
         maxLength={DEFAULT_CODES.length}
@@ -229,34 +393,17 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
         onBlur={handleOnCodeBlur}
         onKeyDown={e => {
           const key = e.key.toLowerCase();
-          if (key === BACKSPACE) {
-            if (code === '') {
-              e.preventDefault();
-              return;
-            }
+          if (key !== ENTER && key !== TAB) {
+            e.preventDefault();
           }
-          if (type === DEFAULT_TYPES.NUMBER) {
-            const allowedKeys = [...NUMBERS.split(''), ENTER, BACKSPACE];
-            if (allowedKeys.indexOf(key) < 0) {
-              e.preventDefault();
-              return;
-            }
+          if (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) {
+            return;
           }
-          if (type === DEFAULT_TYPES.ALPHA) {
-            const allowedKeys = [...ALPHABETS.split(''), ENTER, BACKSPACE];
-            if (allowedKeys.indexOf(key) < 0) {
-              e.preventDefault();
-              return;
-            }
+          const validKey = isValidKey(key, type, code);
+          if (validKey === INVALID_KEY) {
+            return;
           }
-          if (type === DEFAULT_TYPES.ALPHANUMERTIC) {
-            const allowedKeys = [...ALPHABETNUMERICS.split(''), ENTER, BACKSPACE];
-            if (allowedKeys.indexOf(key) < 0) {
-              e.preventDefault();
-              return;
-            }
-          }
-          setPressKey({ key: key });
+          setPressKey({ key: validKey });
         }}
         style={{
           position: 'absolute',
