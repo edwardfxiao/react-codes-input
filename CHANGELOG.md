@@ -1,3 +1,7 @@
+# 2.1.3
+- Enable ```ArrowLeft``` ```ArrowRight``` ```ArrowUp``` ```ArrowDown``` for switching the cell, and ```Delete``` #11 (Not available in moblie)
+- Stable input ID
+
 # 2.1.2
 
 - Change ```input``` ```type``` to ```password``` from ```text``` (and ```tel``` if is on mobile device), due to input source switching issue
