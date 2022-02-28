@@ -11,7 +11,7 @@ A react component for PIN, verify code and passcode entering. Online demo exampl
 # Online Demo
 <a href="https://edwardfxiao.github.io/react-codes-input/">Online demo example</a>
 
-<a href="https://github.com/edwardfxiao/react-codes-input/blob/gh-pages/example/index.js">Demo source code</a>
+<a href="https://github.com/edwardfxiao/react-codes-input/blob/gh-pages/example/index.tsx">Demo source code</a>
 
 # Codesandbox Examples
 * <a href="https://codesandbox.io/s/index-6hnbf">Examples</a>
