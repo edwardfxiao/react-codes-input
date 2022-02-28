@@ -1,20 +1,25 @@
+# 2.1.4
+
+- Enable `Tab` `Shift + Tab` for switching the cell
+
 # 2.1.3
-- Enable ```ArrowLeft``` ```ArrowRight``` ```ArrowUp``` ```ArrowDown``` for switching the cell, and ```Delete``` #11 (Not available in moblie)
+
+- Enable `ArrowLeft` `ArrowRight` `ArrowUp` `ArrowDown` for switching the cell, and `Delete` #11 (Not available in moblie)
 - Stable input ID
 
 # 2.1.2
 
-- Change ```input``` ```type``` to ```password``` from ```text``` (and ```tel``` if is on mobile device), due to input source switching issue
+- Change `input` `type` to `password` from `text` (and `tel` if is on mobile device), due to input source switching issue
 
 # 2.1.1
 
-- Change ```input``` ```type``` to ```text``` from ```password```
-- Change ```input``` ```margin-left``` to ```-9999999px```
+- Change `input` `type` to `text` from `password`
+- Change `input` `margin-left` to `-9999999px`
 
 # 2.1.0
 
 - #6
-- Uses ```require``` attribute of html input element, which not support IE9
+- Uses `require` attribute of html input element, which not support IE9
 
 # 2.0.8
 

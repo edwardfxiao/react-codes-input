@@ -391,12 +391,29 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
         onFocus={handleOnCodeFocus}
         onBlur={handleOnCodeBlur}
         onKeyDown={e => {
-          const key = e.key.toLowerCase();
+          let key = e.key.toLowerCase();
           if (key !== ENTER && key !== TAB) {
             e.preventDefault();
           }
-          if (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) {
-            return;
+          if (key === TAB) {
+            if (!(code.length < 0 || code.length > DEFAULT_CODES.length)) {
+              if (e.shiftKey) {
+                if (curItemIndex !== 0) {
+                  key = ARROW_LEFT;
+                  e.preventDefault();
+                }
+              } else {
+                if (!(curItemIndex === DEFAULT_CODES.length - 1 && code.length === DEFAULT_CODES.length)) {
+                  // right bound
+                  key = ARROW_RIGHT;
+                  e.preventDefault();
+                }
+              }
+            }
+          } else {
+            if (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) {
+              return;
+            }
           }
           const validKey = isValidKey(key, type, code);
           if (validKey === INVALID_KEY) {
