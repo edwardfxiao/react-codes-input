@@ -1,3 +1,7 @@
+# 2.1.5
+
+- Remove classname hash
+
 # 2.1.4
 
 - Enable `Tab` `Shift + Tab` for switching the cell
