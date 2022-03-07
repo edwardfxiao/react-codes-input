@@ -1,5 +1,3 @@
-import { useEffect, useRef } from 'react';
-
 export enum CASE_TYPES {
   UPPERCASE = 'upper',
   LOWERCASE = 'lower',
