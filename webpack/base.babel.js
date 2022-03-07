@@ -72,7 +72,7 @@ export default {
             loader: 'css-loader',
             options: {
               modules: {
-                localIdentName: '[name]__[local',
+                localIdentName: '[name]__[local]',
               },
             },
           },
