@@ -17,7 +17,13 @@ const OPERRATION_KEYS = [ENTER, BACKSPACE, DELETE, ARROW_LEFT, ARROW_RIGHT, ARRO
 const ALLOWED_KEYS = [...ALPHABETNUMERICS, ...OPERRATION_KEYS];
 const INVALID_KEY = '';
 const HIDDEN_INPUT_TYPE = 'password';
-const IS_MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+const IS_MOBILE = () => {
+  if (typeof navigator === 'undefined' || typeof navigator.onLine === 'undefined') {
+    return false;
+  } else {
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  }
+};
 const isValidKey = (key: string, type: string, code: string) => {
   if (!ALLOWED_KEYS.includes(key)) {
     return INVALID_KEY;
@@ -146,7 +152,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   }, []);
   const onKeyDown = useCallback(
     (key: string) => {
-      if (!IS_MOBILE) {
+      if (!IS_MOBILE()) {
         if (key === ARROW_LEFT) {
           const left = curItemIndex - 1;
           setCurItemIndex(left < 0 ? 0 : left);
@@ -264,7 +270,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
             return;
           }
         } else {
-          if (IS_MOBILE) {
+          if (IS_MOBILE()) {
             // mobile devices don't have arrow key
             // typing case: appending. setCode with the value just typed and setCurItemIndex with newCode.length
             if (codeSplits.length < DEFAULT_CODES.length) {
@@ -309,7 +315,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
     const res: AttibutesObj = {};
     switch (type) {
       case DEFAULT_TYPES.NUMBER:
-        res['type'] = IS_MOBILE ? 'tel' : HIDDEN_INPUT_TYPE;
+        res['type'] = IS_MOBILE() ? 'tel' : HIDDEN_INPUT_TYPE;
         res['pattern'] = `[0-9]{${DEFAULT_CODES.length},}`;
         break;
       case DEFAULT_TYPES.ALPHA:

@@ -1,3 +1,7 @@
+# 2.1.6
+
+- type check `navigator` #13
+
 # 2.1.5
 
 - Remove classname hash
