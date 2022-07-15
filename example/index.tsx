@@ -58,6 +58,12 @@ const Component = () => {
           <form
             onSubmit={e => {
               alert('submit alpha');
+              // const input = document.getElementById('22') as HTMLInputElement | null;
+              // if (input != null) {
+              //   // ⛔️ Error: Property 'value' does not exist on type 'HTMLElement'.ts(2339)
+              //   const value = input.value;
+              //   console.log(value);
+              // }
               e.preventDefault();
             }}
           >

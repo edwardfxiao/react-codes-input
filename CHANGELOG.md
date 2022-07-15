@@ -1,3 +1,7 @@
+# 2.1.7
+
+- set input value #14
+
 # 2.1.6
 
 - type check `navigator` #13

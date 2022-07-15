@@ -188,7 +188,9 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
     $inputRef.current.setSelectionRange(curItemIndex, curItemIndex);
   }, [curItemIndex, DEFAULT_CODES]);
   useEffect(() => {
-    setCode(getCased(value, letterCase));
+    const code = getCased(value, letterCase);
+    setCode(code);
+    $inputRef.current.value = code;
   }, [value, letterCase]);
   const handleOnCodeChange = useCallback(
     pressedKey => {
