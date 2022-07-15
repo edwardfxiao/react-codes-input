@@ -1,3 +1,7 @@
+# 2.1.8
+
+- Only set input and curselection once if initial value is passed
+
 # 2.1.7
 
 - set input value #14

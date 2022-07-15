@@ -143,6 +143,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   const $wrapperRef = useRef(null);
   const $component = useRef(null);
   const $inputRef = useRef(null);
+  const isInitial = useRef(true);
   const [curItemIndex, setCurItemIndex] = useState(0);
   const inputId = useMemo(() => id || getRandomId(), [id]);
   useEffect(() => {
@@ -190,7 +191,11 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   useEffect(() => {
     const code = getCased(value, letterCase);
     setCode(code);
-    $inputRef.current.value = code;
+    if (isInitial.current) {
+      $inputRef.current.value = code;
+      setCurItemIndex(code.length);
+      isInitial.current = false;
+    }
   }, [value, letterCase]);
   const handleOnCodeChange = useCallback(
     pressedKey => {
