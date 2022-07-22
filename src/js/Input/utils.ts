@@ -82,3 +82,10 @@ export const getCased = (v: string, type: string) => {
 };
 
 export const getClassName = (className: string) => `RCI-${className}`;
+
+export const isAndroid = () => {
+  if (typeof navigator === 'undefined' || typeof navigator.onLine === 'undefined') {
+    return false;
+  }
+  return /(android)/i.test(navigator.userAgent);
+};

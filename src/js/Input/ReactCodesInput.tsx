@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_TYPES, getClassName } from './utils';
+import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_TYPES, getClassName, isAndroid } from './utils';
 import CSS from './react-codes-input.css';
 const DEFAULT_CODE_LENGTH = 6;
 const ALPHABETS = 'abcdefghijklmnopqrstuvwxyz'.split('');
@@ -146,6 +146,20 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   const isInitial = useRef(true);
   const [curItemIndex, setCurItemIndex] = useState(0);
   const inputId = useMemo(() => id || getRandomId(), [id]);
+  useEffect(() => {
+    if (isAndroid()) {
+      const textInput = (e: any) => {
+        const key = e.data.toLowerCase();
+        if (key.match(/^[a-zA-Z0-9_]*$/gi)) {
+          setPressKey({ key });
+        }
+      };
+      $inputRef.current.addEventListener('textInput', textInput);
+      return () => {
+        $inputRef.current.removeEventListener('textInput', textInput);
+      };
+    }
+  }, []);
   useEffect(() => {
     if (initialFocus) {
       document.getElementById(`${inputId}${0}`).click();
@@ -405,9 +419,16 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
         onBlur={handleOnCodeBlur}
         onKeyDown={e => {
           let key = e.key.toLowerCase();
-          if (key !== ENTER && key !== TAB) {
-            e.preventDefault();
+          if (isAndroid()) {
+            if (key === BACKSPACE) {
+              setPressKey({ key });
+            }
+            return false;
           }
+          if (key)
+            if (key !== ENTER && key !== TAB) {
+              e.preventDefault();
+            }
           if (key === TAB) {
             if (!(code.length < 0 || code.length > DEFAULT_CODES.length)) {
               if (e.shiftKey) {

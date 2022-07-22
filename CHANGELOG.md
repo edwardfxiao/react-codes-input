@@ -1,3 +1,7 @@
+# 2.1.9
+
+- Fix issues only on android browser #15
+
 # 2.1.8
 
 - Only set input and curselection once if initial value is passed
