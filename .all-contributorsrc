@@ -28,6 +28,15 @@
         "doc",
         "bug"
       ]
+    },
+    {
+      "login": "alyona-mordas",
+      "name": "Olena Mordas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/95859516?v=4",
+      "profile": "https://github.com/alyona-mordas",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
