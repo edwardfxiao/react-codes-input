@@ -156,7 +156,9 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
       };
       $inputRef.current.addEventListener('textInput', textInput);
       return () => {
-        $inputRef.current.removeEventListener('textInput', textInput);
+        if ($inputRef.current) {
+          $inputRef.current.removeEventListener('textInput', textInput);
+        }
       };
     }
   }, []);

@@ -1,3 +1,7 @@
+# 2.1.10
+
+- Fix potencial bugs
+
 # 2.1.9
 
 - Fix issues only on android browser #15
