@@ -1,3 +1,7 @@
+# 2.2.0
+
+- Add `auto` option to `letterCase` #17
+
 # 2.1.10
 
 - Fix potencial bugs

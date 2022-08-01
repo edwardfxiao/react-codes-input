@@ -1,6 +1,7 @@
 export enum CASE_TYPES {
   UPPERCASE = 'upper',
   LOWERCASE = 'lower',
+  AUTO = 'auto',
 }
 
 export const cx = (...params: Array<any>) => {
@@ -75,6 +76,8 @@ export const getCased = (v: string, type: string) => {
         return v.toUpperCase();
       case CASE_TYPES.LOWERCASE:
         return v.toLowerCase();
+      case CASE_TYPES.AUTO:
+        return v;
     }
   } else {
     return v.toUpperCase();

@@ -46,7 +46,7 @@ This library uses ```require``` attribute of html input element, which not suppo
 |id                           |  Opt  |  Str        |                                               |  random ID      |
 |onChange                     |  Opt  |  Func       |(value: string) => void                        |  none           |
 |type                         |  Opt  |  Default    |Options are ['alphanumeric', 'alpha', 'number']|  "alphanumeric" |
-|letterCase                   |  Opt  |  Str        |Options are ['upper', 'lower']                 |  "upper"        |
+|letterCase                   |  Opt  |  Str        |Options are ['upper', 'lower', 'auto']         |  "upper"        |
 |value                        |  Opt  |  Str        |                                               |  ""             |
 |disabled                     |  Opt  |  Bool       |Options are [false, true]                      |  false          |
 |hide                         |  Opt  |  Bool       |Options are [false, true]                      |  false          |
@@ -80,7 +80,7 @@ import 'react-codes-input/lib/react-codes-input.min.css';
   id="" // Opt. Str. Default random ID.
   onChange="" // Opt. Func. Default none.
   type="" // Opt. Str. Default "alphanumeric". Options are ['alphanumeric', 'alpha', 'number'].
-  letterCase="upper" // Opt. Str. Default "upper". Options are ['upper', 'lower'].
+  letterCase="upper" // Opt. Str. Default "upper". Options are ['upper', 'lower', 'auto'].
   value="" // Opt. Str. Default "".
   disabled={false} // Opt. Bool. Default false. Options are [false, true].
   hide={false} // Opt. Bool. Default false. Options are [false, true].

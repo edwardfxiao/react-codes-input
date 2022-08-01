@@ -2,9 +2,11 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_TYPES, getClassName, isAndroid } from './utils';
 import CSS from './react-codes-input.css';
 const DEFAULT_CODE_LENGTH = 6;
-const ALPHABETS = 'abcdefghijklmnopqrstuvwxyz'.split('');
+const ALPHABETS_BASE = 'abcdefghijklmnopqrstuvwxyz';
+const ALPHABETS = ALPHABETS_BASE.split('');
+const ALPHABETS_CAP = ALPHABETS_BASE.toUpperCase().split('');
 const NUMBERS = '0123456789'.split('');
-const ALPHABETNUMERICS = [...ALPHABETS, ...NUMBERS];
+const ALPHABETNUMERICS = [...ALPHABETS, ...ALPHABETS_CAP, ...NUMBERS];
 const TAB = 'tab';
 const ENTER = 'enter';
 const BACKSPACE = 'backspace';
@@ -23,6 +25,20 @@ const IS_MOBILE = () => {
   } else {
     return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   }
+};
+const autoCase = (cap: boolean, shift: boolean, key: string) => {
+  if (cap) {
+    key = key.toUpperCase();
+    if (shift) {
+      key = key.toLowerCase();
+    }
+  } else {
+    key = key.toLowerCase();
+    if (shift) {
+      key = key.toUpperCase();
+    }
+  }
+  return key;
 };
 const isValidKey = (key: string, type: string, code: string) => {
   if (!ALLOWED_KEYS.includes(key)) {
@@ -90,7 +106,7 @@ export interface ReactCodesInputProps {
   codeLength?: number;
   id?: string;
   type?: 'number' | 'alpha' | 'alphanumeric';
-  letterCase?: 'upper' | 'lower';
+  letterCase?: 'upper' | 'lower' | 'auto';
   disabled?: boolean;
   hide?: boolean;
   focusColor?: string;
@@ -149,6 +165,12 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   useEffect(() => {
     if (isAndroid()) {
       const textInput = (e: any) => {
+        if (letterCase === CASE_TYPES.AUTO) {
+          if (ALPHABETNUMERICS.includes(e.data)) {
+            setPressKey({ key: e.data });
+            return;
+          }
+        }
         const key = e.data.toLowerCase();
         if (key.match(/^[a-zA-Z0-9_]*$/gi)) {
           setPressKey({ key });
@@ -420,7 +442,14 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
         onFocus={handleOnCodeFocus}
         onBlur={handleOnCodeBlur}
         onKeyDown={e => {
-          let key = e.key.toLowerCase();
+          let key = e.key;
+          if (letterCase === CASE_TYPES.AUTO) {
+            if (ALPHABETNUMERICS.includes(key)) {
+              setPressKey({ key: IS_MOBILE() ? key : autoCase(e.getModifierState('CapsLock'), e.shiftKey, key) });
+              return;
+            }
+          }
+          key = key.toLowerCase();
           if (isAndroid()) {
             if (key === BACKSPACE) {
               setPressKey({ key });
