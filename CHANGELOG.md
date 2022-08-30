@@ -1,3 +1,7 @@
+# 2.2.1
+
+- Update `README.md` since it is on cdnjs
+
 # 2.2.0
 
 - Add `auto` option to `letterCase` #17
