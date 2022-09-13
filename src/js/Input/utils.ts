@@ -92,3 +92,16 @@ export const isAndroid = () => {
   }
   return /(android)/i.test(navigator.userAgent);
 };
+export const isChrome = () => {
+  if (typeof navigator === 'undefined' || typeof navigator.onLine === 'undefined') {
+    return false;
+  }
+  return /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+};
+export const isMobile = () => {
+  if (typeof navigator === 'undefined' || typeof navigator.onLine === 'undefined') {
+    return false;
+  } else {
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  }
+};

@@ -1,3 +1,7 @@
+# 2.2.2
+
+- Fix problem on android chrome only #15
+
 # 2.2.1
 
 - Update `README.md` since it is on cdnjs
