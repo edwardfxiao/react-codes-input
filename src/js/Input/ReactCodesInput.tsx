@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_TYPES, getClassName } from './utils';
+import { cx, getRandomId, getAlphanumeric, getAlpha, getNumeric, getCased, CASE_TYPES, getClassName, isMobile, isChrome, isAndroid } from './utils';
 import CSS from './react-codes-input.css';
 const DEFAULT_CODE_LENGTH = 6;
-const ALPHABETS = 'abcdefghijklmnopqrstuvwxyz'.split('');
+const ALPHABETS_BASE = 'abcdefghijklmnopqrstuvwxyz';
+const ALPHABETS = ALPHABETS_BASE.split('');
+const ALPHABETS_CAP = ALPHABETS_BASE.toUpperCase().split('');
 const NUMBERS = '0123456789'.split('');
-const ALPHABETNUMERICS = [...ALPHABETS, ...NUMBERS];
+const ALPHABETNUMERICS = [...ALPHABETS, ...ALPHABETS_CAP, ...NUMBERS];
 const TAB = 'tab';
 const ENTER = 'enter';
 const BACKSPACE = 'backspace';
@@ -17,7 +19,23 @@ const OPERRATION_KEYS = [ENTER, BACKSPACE, DELETE, ARROW_LEFT, ARROW_RIGHT, ARRO
 const ALLOWED_KEYS = [...ALPHABETNUMERICS, ...OPERRATION_KEYS];
 const INVALID_KEY = '';
 const HIDDEN_INPUT_TYPE = 'password';
-const IS_MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+const isMobileDevice = isMobile();
+const isChromeDevice = isChrome();
+const isAndroidDevice = isAndroid();
+const autoCase = (cap: boolean, shift: boolean, key: string) => {
+  if (cap) {
+    key = key.toUpperCase();
+    if (shift) {
+      key = key.toLowerCase();
+    }
+  } else {
+    key = key.toLowerCase();
+    if (shift) {
+      key = key.toUpperCase();
+    }
+  }
+  return key;
+};
 const isValidKey = (key: string, type: string, code: string) => {
   if (!ALLOWED_KEYS.includes(key)) {
     return INVALID_KEY;
@@ -84,7 +102,7 @@ export interface ReactCodesInputProps {
   codeLength?: number;
   id?: string;
   type?: 'number' | 'alpha' | 'alphanumeric';
-  letterCase?: 'upper' | 'lower';
+  letterCase?: 'upper' | 'lower' | 'auto';
   disabled?: boolean;
   hide?: boolean;
   focusColor?: string;
@@ -137,8 +155,31 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   const $wrapperRef = useRef(null);
   const $component = useRef(null);
   const $inputRef = useRef(null);
+  const isInitial = useRef(true);
   const [curItemIndex, setCurItemIndex] = useState(0);
   const inputId = useMemo(() => id || getRandomId(), [id]);
+  useEffect(() => {
+    if (isAndroidDevice && isChromeDevice) {
+      const textInput = (e: any) => {
+        if (letterCase === CASE_TYPES.AUTO) {
+          if (ALPHABETNUMERICS.includes(e.data)) {
+            setPressKey({ key: e.data });
+            return;
+          }
+        }
+        const key = e.data.toLowerCase();
+        if (key.match(/^[a-zA-Z0-9_]*$/gi)) {
+          setPressKey({ key });
+        }
+      };
+      $inputRef.current.addEventListener('textInput', textInput);
+      return () => {
+        if ($inputRef.current) {
+          $inputRef.current.removeEventListener('textInput', textInput);
+        }
+      };
+    }
+  }, []);
   useEffect(() => {
     if (initialFocus) {
       document.getElementById(`${inputId}${0}`).click();
@@ -146,7 +187,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
   }, []);
   const onKeyDown = useCallback(
     (key: string) => {
-      if (!IS_MOBILE) {
+      if (!isMobileDevice) {
         if (key === ARROW_LEFT) {
           const left = curItemIndex - 1;
           setCurItemIndex(left < 0 ? 0 : left);
@@ -182,7 +223,13 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
     $inputRef.current.setSelectionRange(curItemIndex, curItemIndex);
   }, [curItemIndex, DEFAULT_CODES]);
   useEffect(() => {
-    setCode(getCased(value, letterCase));
+    const code = getCased(value, letterCase);
+    setCode(code);
+    if (isInitial.current) {
+      $inputRef.current.value = code;
+      setCurItemIndex(code.length);
+      isInitial.current = false;
+    }
   }, [value, letterCase]);
   const handleOnCodeChange = useCallback(
     pressedKey => {
@@ -264,7 +311,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
             return;
           }
         } else {
-          if (IS_MOBILE) {
+          if (isMobileDevice) {
             // mobile devices don't have arrow key
             // typing case: appending. setCode with the value just typed and setCurItemIndex with newCode.length
             if (codeSplits.length < DEFAULT_CODES.length) {
@@ -309,7 +356,7 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
     const res: AttibutesObj = {};
     switch (type) {
       case DEFAULT_TYPES.NUMBER:
-        res['type'] = IS_MOBILE ? 'tel' : HIDDEN_INPUT_TYPE;
+        res['type'] = isMobileDevice ? 'tel' : HIDDEN_INPUT_TYPE;
         res['pattern'] = `[0-9]{${DEFAULT_CODES.length},}`;
         break;
       case DEFAULT_TYPES.ALPHA:
@@ -391,10 +438,24 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
         onFocus={handleOnCodeFocus}
         onBlur={handleOnCodeBlur}
         onKeyDown={e => {
-          let key = e.key.toLowerCase();
-          if (key !== ENTER && key !== TAB) {
-            e.preventDefault();
+          let key = e.key;
+          if (letterCase === CASE_TYPES.AUTO) {
+            if (ALPHABETNUMERICS.includes(key)) {
+              setPressKey({ key: isMobileDevice ? key : autoCase(e.getModifierState('CapsLock'), e.shiftKey, key) });
+              return;
+            }
           }
+          key = key.toLowerCase();
+          if (isAndroidDevice && isChromeDevice) {
+            if (key === BACKSPACE) {
+              setPressKey({ key });
+            }
+            return false;
+          }
+          if (key)
+            if (key !== ENTER && key !== TAB) {
+              e.preventDefault();
+            }
           if (key === TAB) {
             if (!(code.length < 0 || code.length > DEFAULT_CODES.length)) {
               if (e.shiftKey) {

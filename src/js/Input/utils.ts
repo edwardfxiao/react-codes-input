@@ -1,6 +1,7 @@
 export enum CASE_TYPES {
   UPPERCASE = 'upper',
   LOWERCASE = 'lower',
+  AUTO = 'auto',
 }
 
 export const cx = (...params: Array<any>) => {
@@ -75,6 +76,8 @@ export const getCased = (v: string, type: string) => {
         return v.toUpperCase();
       case CASE_TYPES.LOWERCASE:
         return v.toLowerCase();
+      case CASE_TYPES.AUTO:
+        return v;
     }
   } else {
     return v.toUpperCase();
@@ -82,3 +85,23 @@ export const getCased = (v: string, type: string) => {
 };
 
 export const getClassName = (className: string) => `RCI-${className}`;
+
+export const isAndroid = () => {
+  if (typeof navigator === 'undefined' || typeof navigator.onLine === 'undefined') {
+    return false;
+  }
+  return /(android)/i.test(navigator.userAgent);
+};
+export const isChrome = () => {
+  if (typeof navigator === 'undefined' || typeof navigator.onLine === 'undefined') {
+    return false;
+  }
+  return /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+};
+export const isMobile = () => {
+  if (typeof navigator === 'undefined' || typeof navigator.onLine === 'undefined') {
+    return false;
+  } else {
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  }
+};

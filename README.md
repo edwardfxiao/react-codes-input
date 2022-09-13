@@ -1,8 +1,8 @@
 # react-codes-input
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-[![npm version](https://badge.fury.io/js/react-codes-input.svg)](https://badge.fury.io/js/react-codes-input) ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/react-codes-input.svg) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/edwardfxiao/react-codes-input/master/LICENSE)[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
+[![npm version](https://badge.fury.io/js/react-codes-input.svg)](https://badge.fury.io/js/react-codes-input) ![Cdnjs](https://img.shields.io/cdnjs/v/react-codes-input) ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/react-codes-input.svg) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/edwardfxiao/react-codes-input/master/LICENSE) [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE) [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 
 A react component for PIN, verify code and passcode entering. Online demo examples.
 
@@ -28,6 +28,29 @@ A react component for PIN, verify code and passcode entering. Online demo exampl
 ```sh
 npm install react-codes-input --save
 ```
+
+#### By CDN (starting from v2.2.0)
+```html
+<head>
+ ...
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-codes-input/2.2.0/react-codes-input.min.css"/>
+</head>
+<body>
+ <div id="root"></div>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.13.1/umd/react.production.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.13.1/umd/react-dom.production.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/react-codes-input/2.2.0/react-codes-input.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+ <script type="text/babel">
+    const App = React.memo(() => {
+      return (<ReactCodesInput .../>)
+    });
+    ReactDOM.render(<App />, document.getElementById('root'));
+ </script>
+</body>
+
+```
+
 # Donation
 <a href="https://www.paypal.me/XIAOMENGXIAO/0.99" target="_blank" alt="PayPal Donate">Thanks for donating me a donut!&nbsp;&nbsp;⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄</a>
 
@@ -46,7 +69,7 @@ This library uses ```require``` attribute of html input element, which not suppo
 |id                           |  Opt  |  Str        |                                               |  random ID      |
 |onChange                     |  Opt  |  Func       |(value: string) => void                        |  none           |
 |type                         |  Opt  |  Default    |Options are ['alphanumeric', 'alpha', 'number']|  "alphanumeric" |
-|letterCase                   |  Opt  |  Str        |Options are ['upper', 'lower']                 |  "upper"        |
+|letterCase                   |  Opt  |  Str        |Options are ['upper', 'lower', 'auto']         |  "upper"        |
 |value                        |  Opt  |  Str        |                                               |  ""             |
 |disabled                     |  Opt  |  Bool       |Options are [false, true]                      |  false          |
 |hide                         |  Opt  |  Bool       |Options are [false, true]                      |  false          |
@@ -80,7 +103,7 @@ import 'react-codes-input/lib/react-codes-input.min.css';
   id="" // Opt. Str. Default random ID.
   onChange="" // Opt. Func. Default none.
   type="" // Opt. Str. Default "alphanumeric". Options are ['alphanumeric', 'alpha', 'number'].
-  letterCase="upper" // Opt. Str. Default "upper". Options are ['upper', 'lower'].
+  letterCase="upper" // Opt. Str. Default "upper". Options are ['upper', 'lower', 'auto'].
   value="" // Opt. Str. Default "".
   disabled={false} // Opt. Bool. Default false. Options are [false, true].
   hide={false} // Opt. Bool. Default false. Options are [false, true].
@@ -114,6 +137,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/edwardfxiao"><img src="https://avatars.githubusercontent.com/u/11728228?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Edward Xiao</b></sub></a><br /><a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Code">💻</a> <a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Documentation">📖</a> <a href="#infra-edwardfxiao" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/edwardfxiao/react-codes-input/commits?author=edwardfxiao" title="Tests">⚠️</a> <a href="https://github.com/edwardfxiao/react-codes-input/pulls?q=is%3Apr+reviewed-by%3Aedwardfxiao" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://github.com/bulhiCzar"><img src="https://avatars.githubusercontent.com/u/70818351?v=4?s=100" width="100px;" alt=""/><br /><sub><b>bulhiCzar</b></sub></a><br /><a href="https://github.com/edwardfxiao/react-codes-input/commits?author=bulhiCzar" title="Code">💻</a> <a href="https://github.com/edwardfxiao/react-codes-input/commits?author=bulhiCzar" title="Documentation">📖</a> <a href="https://github.com/edwardfxiao/react-codes-input/issues?q=author%3AbulhiCzar" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/alyona-mordas"><img src="https://avatars.githubusercontent.com/u/95859516?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Olena Mordas</b></sub></a><br /><a href="https://github.com/edwardfxiao/react-codes-input/issues?q=author%3Aalyona-mordas" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 

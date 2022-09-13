@@ -1,3 +1,35 @@
+# 2.2.2
+
+- Fix problem on android chrome only #15
+
+# 2.2.1
+
+- Update `README.md` since it is on cdnjs
+
+# 2.2.0
+
+- Add `auto` option to `letterCase` #17
+
+# 2.1.10
+
+- Fix potencial bugs
+
+# 2.1.9
+
+- Fix issues only on android browser #15
+
+# 2.1.8
+
+- Only set input and curselection once if initial value is passed
+
+# 2.1.7
+
+- set input value #14
+
+# 2.1.6
+
+- type check `navigator` #13
+
 # 2.1.5
 
 - Remove classname hash

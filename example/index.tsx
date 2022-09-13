@@ -94,6 +94,12 @@ const Component = () => {
         <div style={{ flex: '0 0 50%' }}>
           <form
             onSubmit={e => {
+              // const input = document.getElementById('22') as HTMLInputElement | null;
+              // if (input != null) {
+              //   // ⛔️ Error: Property 'value' does not exist on type 'HTMLElement'.ts(2339)
+              //   const value = input.value;
+              //   console.log(value);
+              // }
               alert('submit number');
               e.preventDefault();
             }}
