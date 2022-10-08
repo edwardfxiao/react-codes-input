@@ -1,3 +1,7 @@
+# 2.2.3
+
+- Workaround #20
+
 # 2.2.2
 
 - Fix problem on android chrome only #15
