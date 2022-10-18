@@ -220,7 +220,8 @@ const ReactCodesInput: React.FC<ReactCodesInputProps> = ({
       setCurItemIndex(DEFAULT_CODES.length - 1);
       return;
     }
-    $inputRef.current.setSelectionRange(curItemIndex, curItemIndex);
+    // workaround #20, maybe it was for IE9
+    // $inputRef.current.setSelectionRange(curItemIndex, curItemIndex);
   }, [curItemIndex, DEFAULT_CODES]);
   useEffect(() => {
     const code = getCased(value, letterCase);
